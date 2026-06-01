@@ -11813,7 +11813,7 @@ msgstr "Iesniegt"
 msgid "Subtitle"
 msgstr "Apakšvirsraksts"
 
-msgid "Subtotal"
+msgid "Subvalue"
 msgstr "Starpsumma"
 
 msgid "Success"

@@ -10941,7 +10941,7 @@ msgstr "Odoslať"
 msgid "Subtitle"
 msgstr "Podtitulek"
 
-msgid "Subtotal"
+msgid "Subvalue"
 msgstr "Mezisoučet"
 
 msgid "Success"
