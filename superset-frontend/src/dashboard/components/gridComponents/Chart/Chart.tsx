@@ -32,7 +32,6 @@ import { styled } from '@apache-superset/core/theme';
 import { t } from '@apache-superset/core/translation';
 import { debounce } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { exportChart } from 'src/explore/exploreUtils';
 import ChartContainer from 'src/components/Chart/ChartContainer';
@@ -81,6 +80,7 @@ import {
 import getFormDataWithExtraFilters from '../../../util/charts/getFormDataWithExtraFilters';
 import { useChartCustomizationFromRedux } from '../../nativeFilters/state';
 import { PLACEHOLDER_DATASOURCE } from '../../../constants';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 interface ChartProps {
   id: number;
@@ -164,7 +164,7 @@ const createOwnStateWithChartState = (
 };
 
 const Chart = (props: ChartProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const descriptionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -186,60 +186,60 @@ const Chart = (props: ChartProps) => {
     [dispatch],
   );
 
-  const chart = useSelector((state: RootState) => state.charts[props.id]);
+  const chart = useAppSelector((state: RootState) => state.charts[props.id]);
   const queriesResponse = chart?.queriesResponse;
   const chartUpdateEndTime = chart?.chartUpdateEndTime;
   const chartStatus = chart?.chartStatus;
   const annotationQuery = chart?.annotationQuery;
 
-  const slice: Slice | Record<string, never> = useSelector(
+  const slice: Slice | Record<string, never> = useAppSelector(
     (state: RootState) => state.sliceEntities.slices[props.id] || EMPTY_OBJECT,
   );
   const sliceVizType = slice.viz_type;
   const sliceSliceId = slice.slice_id;
   const sliceSliceName = slice.slice_name;
-  const editMode = useSelector(
+  const editMode = useAppSelector(
     (state: RootState) => state.dashboardState.editMode,
   );
-  const isExpanded = useSelector(
+  const isExpanded = useAppSelector(
     (state: RootState) =>
       !!(state.dashboardState as JsonObject).expandedSlices?.[props.id],
   );
-  const supersetCanExplore = useSelector(
+  const supersetCanExplore = useAppSelector(
     (state: RootState) =>
       !!(state.dashboardInfo as JsonObject).superset_can_explore,
   );
-  const supersetCanShare = useSelector(
+  const supersetCanShare = useAppSelector(
     (state: RootState) =>
       !!(state.dashboardInfo as JsonObject).superset_can_share,
   );
-  const supersetCanCSV = useSelector(
+  const supersetCanCSV = useAppSelector(
     (state: RootState) =>
       !!(state.dashboardInfo as JsonObject).superset_can_csv,
   );
-  const timeout: number = useSelector(
+  const timeout: number = useAppSelector(
     (state: RootState) =>
       state.dashboardInfo.common.conf.SUPERSET_WEBSERVER_TIMEOUT as number,
   );
-  const emitCrossFilters = useSelector(
+  const emitCrossFilters = useAppSelector(
     (state: RootState) => !!state.dashboardInfo.crossFiltersEnabled,
   );
-  const maxRows: number = useSelector(
+  const maxRows: number = useAppSelector(
     (state: RootState) => state.dashboardInfo.common.conf.SQL_MAX_ROW as number,
   );
-  const streamingThreshold: number = useSelector(
+  const streamingThreshold: number = useAppSelector(
     (state: RootState) =>
       (state.dashboardInfo.common.conf.CSV_STREAMING_ROW_THRESHOLD as number) ||
       DEFAULT_CSV_STREAMING_ROW_THRESHOLD,
   );
-  const datasource: Datasource = useSelector(
+  const datasource: Datasource = useAppSelector(
     (state: RootState) =>
       (chart?.form_data?.datasource &&
         state.datasources[chart.form_data.datasource]) ||
       PLACEHOLDER_DATASOURCE,
   );
-  const dashboardInfo = useSelector((state: RootState) => state.dashboardInfo);
-  const showChartTimestamps: boolean = useSelector(
+  const dashboardInfo = useAppSelector((state: RootState) => state.dashboardInfo);
+  const showChartTimestamps: boolean = useAppSelector(
     (state: RootState) =>
       (state.dashboardInfo?.metadata as JsonObject)?.show_chart_timestamps ??
       false,
@@ -395,41 +395,41 @@ const Chart = (props: ChartProps) => {
     });
   }, [boundActionCreators.logEvent, sliceSliceId, isCached]);
 
-  const chartConfiguration = useSelector(
+  const chartConfiguration = useAppSelector(
     (state: RootState) => state.dashboardInfo.metadata?.chart_configuration,
   );
   const chartCustomizationItems = useChartCustomizationFromRedux();
-  const colorScheme = useSelector(
+  const colorScheme = useAppSelector(
     (state: RootState) => state.dashboardState.colorScheme,
   );
-  const colorNamespace = useSelector(
+  const colorNamespace = useAppSelector(
     (state: RootState) =>
       (state.dashboardState as JsonObject).colorNamespace as string | undefined,
   );
-  const datasetsStatus = useSelector(
+  const datasetsStatus = useAppSelector(
     (state: RootState) =>
       (state.dashboardState as JsonObject).datasetsStatus as string | undefined,
   );
-  const allSliceIds = useSelector(
+  const allSliceIds = useAppSelector(
     (state: RootState) => state.dashboardState.sliceIds,
   );
-  const nativeFilters = useSelector(
+  const nativeFilters = useAppSelector(
     (state: RootState) => state.nativeFilters?.filters,
   );
-  const dataMask = useSelector((state: RootState) => state.dataMask);
+  const dataMask = useAppSelector((state: RootState) => state.dataMask);
   const dataMaskOwnState = dataMask[props.id]?.ownState;
-  const chartState = useSelector(
+  const chartState = useAppSelector(
     (state: RootState) => state.dashboardState.chartStates?.[props.id],
   );
-  const labelsColor: JsonObject = useSelector(
+  const labelsColor: JsonObject = useAppSelector(
     (state: RootState) =>
       state.dashboardInfo?.metadata?.label_colors || EMPTY_OBJECT,
   );
-  const labelsColorMap: JsonObject = useSelector(
+  const labelsColorMap: JsonObject = useAppSelector(
     (state: RootState) =>
       state.dashboardInfo?.metadata?.map_label_colors || EMPTY_OBJECT,
   );
-  const sharedLabelsColors = useSelector((state: RootState) =>
+  const sharedLabelsColors = useAppSelector((state: RootState) =>
     enforceSharedLabelsColorsArray(
       state.dashboardInfo?.metadata?.shared_label_colors,
     ),

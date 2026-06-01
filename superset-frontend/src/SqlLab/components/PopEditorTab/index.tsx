@@ -17,8 +17,7 @@
  * under the License.
  */
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import URI from 'urijs';
 import { pick } from 'lodash';
 import { useComponentDidUpdate } from '@superset-ui/core';
@@ -46,7 +45,7 @@ const PopEditorTab: React.FC<{ children?: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [queryEditorId, setQueryEditorId] = useState<string>();
   const { requestedQuery } = useLocationState();
-  const activeQueryEditorId = useSelector<SqlLabRootState, string>(
+  const activeQueryEditorId = useAppSelector<SqlLabRootState, string>(
     ({ sqlLab: { tabHistory } }) => tabHistory.slice(-1)[0],
   );
   const [updatedUrl, setUpdatedUrl] = useState<string>(SQL_LAB_URL);

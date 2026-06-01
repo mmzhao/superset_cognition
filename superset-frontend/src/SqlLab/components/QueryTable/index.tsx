@@ -30,8 +30,8 @@ import ProgressBar from '@superset-ui/core/components/ProgressBar';
 import { t } from '@apache-superset/core/translation';
 import { QueryResponse, QueryState } from '@superset-ui/core';
 import { useTheme } from '@apache-superset/core/theme';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 import {
   queryEditorSetSql,
@@ -136,8 +136,8 @@ const QueryTable = ({
     [columns],
   );
 
-  const user = useSelector<SqlLabRootState, User>(state => state.user);
-  const reduxQueries = useSelector<
+  const user = useAppSelector<SqlLabRootState, User>(state => state.user);
+  const reduxQueries = useAppSelector<
     SqlLabRootState,
     Record<string, QueryResponse>
   >(state => state.sqlLab?.queries ?? {}, shallowEqual);

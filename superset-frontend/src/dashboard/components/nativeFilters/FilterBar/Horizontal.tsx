@@ -29,7 +29,6 @@ import { Icons } from '@superset-ui/core/components/Icons';
 import { FilterBarOrientation, RootState } from 'src/dashboard/types';
 import { useChartLayoutItems } from 'src/dashboard/util/useChartLayoutItems';
 import { useChartIds } from 'src/dashboard/util/charts/useChartIds';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { removeDataMask, updateDataMask } from 'src/dataMask/actions';
 import {
@@ -50,6 +49,7 @@ import {
   UrlFilterIndicator,
 } from './UrlFilters/urlFilterUtils';
 import UrlFilterTag from './UrlFilters/UrlFilterTag';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 const HorizontalBar = styled.div`
   ${({ theme }) => `
@@ -117,10 +117,10 @@ const HorizontalFilterBar: FC<HorizontalBarProps> = ({
   clearAllTriggers,
   onClearAllComplete,
 }) => {
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const chartIds = useChartIds();

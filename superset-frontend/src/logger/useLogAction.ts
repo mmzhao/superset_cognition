@@ -18,11 +18,11 @@
  */
 
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { logEvent } from 'src/logger/actions';
+import { useAppDispatch } from 'src/views/store';
 
 export default function useLogAction(staticEventData: Record<string, any>) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const logAction = useCallback<typeof logEvent>(
     (type, payload) =>
       dispatch(

@@ -26,7 +26,6 @@ import {
   memo,
 } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { uniqWith } from 'lodash';
 import cx from 'classnames';
 import { t } from '@apache-superset/core/translation';
@@ -50,6 +49,7 @@ import {
 } from '../nativeFilters/selectors';
 import { Chart, RootState } from '../../types';
 import { useIsAutoRefreshing } from '../../contexts/AutoRefreshContext';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 export interface FiltersBadgeProps {
   chartId: number;
@@ -106,24 +106,24 @@ const sortByStatus = (indicators: Indicator[]): Indicator[] => {
 const indicatorsInitialState: Indicator[] = [];
 
 export const FiltersBadge = ({ chartId }: FiltersBadgeProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isAutoRefreshing = useIsAutoRefreshing();
-  const datasources = useSelector<RootState, RootState['datasources']>(
+  const datasources = useAppSelector<RootState, RootState['datasources']>(
     state => state.datasources,
   );
-  const dashboardFilters = useSelector<
+  const dashboardFilters = useAppSelector<
     RootState,
     RootState['dashboardFilters']
   >(state => state.dashboardFilters);
-  const nativeFilters = useSelector<RootState, Filters>(
+  const nativeFilters = useAppSelector<RootState, Filters>(
     state => state.nativeFilters?.filters,
   );
-  const chartConfiguration = useSelector<RootState, JsonObject>(
+  const chartConfiguration = useAppSelector<RootState, JsonObject>(
     state => state.dashboardInfo.metadata?.chart_configuration,
   );
-  const chart = useSelector<RootState, Chart>(state => state.charts[chartId]);
+  const chart = useAppSelector<RootState, Chart>(state => state.charts[chartId]);
   const chartLayoutItems = useChartLayoutItems();
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
 

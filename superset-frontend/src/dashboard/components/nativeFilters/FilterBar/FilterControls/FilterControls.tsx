@@ -49,7 +49,6 @@ import {
   InPortal,
   OutPortal,
 } from 'react-reverse-portal';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   useDashboardHasTabs,
   useSelectFiltersInScope,
@@ -77,6 +76,7 @@ import { useFilterOutlined } from '../useFilterOutlined';
 import { useChartsVerboseMaps } from '../utils';
 import FilterControl from './FilterControl';
 import FilterDivider from './FilterDivider';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 function addDataMaskToCustomization(
   customization: ChartCustomization,
@@ -154,8 +154,8 @@ const FilterControls: FC<FilterControlsProps> = ({
   hideHeader = false,
 }) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const filterBarOrientation = useSelector<RootState, FilterBarOrientation>(
+  const dispatch = useAppDispatch();
+  const filterBarOrientation = useAppSelector<RootState, FilterBarOrientation>(
     ({ dashboardInfo }) => dashboardInfo.filterBarOrientation,
   );
 
@@ -164,7 +164,7 @@ const FilterControls: FC<FilterControlsProps> = ({
   const [overflowedIds, setOverflowedIds] = useState<string[]>([]);
   const popoverRef = useRef<DropdownContainerRef>(null);
 
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
   const chartIds = useChartIds();

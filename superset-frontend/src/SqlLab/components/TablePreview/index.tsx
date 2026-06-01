@@ -17,8 +17,8 @@
  * under the License.
  */
 import { type FC, useCallback, useMemo, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import { nanoid } from 'nanoid';
 import { t } from '@apache-superset/core/translation';
 import { ClientErrorObject, getExtensionsRegistry } from '@superset-ui/core';
@@ -113,7 +113,7 @@ const renderWell = (partitions: TableMetaData['partitions']) => {
 const TablePreview: FC<Props> = ({ dbId, catalog, schema, tableName }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const [databaseName, backend, disableDataPreview] = useSelector<
+  const [databaseName, backend, disableDataPreview] = useAppSelector<
     SqlLabRootState,
     string[]
   >(

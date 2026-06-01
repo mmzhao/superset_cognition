@@ -31,10 +31,9 @@ import {
   DatePicker,
   type RangePickerProps,
 } from '@superset-ui/core/components';
-import { useSelector } from 'react-redux';
 
 import ControlHeader from 'src/explore/components/ControlHeader';
-import { RootState } from 'src/views/store';
+import { RootState, useAppSelector } from 'src/views/store';
 import {
   DEFAULT_DATE_PATTERN,
   INVALID_DATE,
@@ -75,7 +74,7 @@ export default function TimeOffsetControls({
   const [savedStartDate, setSavedStartDate] = useState<string | null>(null);
   const [isDateSelected, setIsDateSelected] = useState<boolean>(true);
 
-  const currentTimeRangeFilters = useSelector<RootState, BinaryAdhocFilter[]>(
+  const currentTimeRangeFilters = useAppSelector<RootState, BinaryAdhocFilter[]>(
     state =>
       state.explore.form_data.adhoc_filters.filter(
         (adhoc_filter: SimpleAdhocFilter) =>
@@ -84,7 +83,7 @@ export default function TimeOffsetControls({
     isTimeRangeEqual,
   );
 
-  const currentStartDate = useSelector<RootState, string>(
+  const currentStartDate = useAppSelector<RootState, string>(
     state => state.explore.form_data.start_date_offset,
     isStartDateEqual,
   );
@@ -101,7 +100,7 @@ export default function TimeOffsetControls({
     }
   }, [currentStartDate]);
 
-  const previousCustomFilter = useSelector<RootState, BinaryAdhocFilter[]>(
+  const previousCustomFilter = useAppSelector<RootState, BinaryAdhocFilter[]>(
     state =>
       state.explore.form_data.adhoc_custom?.filter(
         (adhoc_filter: SimpleAdhocFilter) =>

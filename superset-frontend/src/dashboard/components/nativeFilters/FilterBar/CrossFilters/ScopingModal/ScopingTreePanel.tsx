@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { isDefined, NativeFilterScope } from '@superset-ui/core';
 import { Alert } from '@apache-superset/core/components';
@@ -35,6 +34,7 @@ import { CHART_TYPE } from 'src/dashboard/util/componentTypes';
 import type { SelectOptionsType } from '@superset-ui/core/components';
 import { Icons } from '@superset-ui/core/components/Icons';
 import { NEW_CHART_SCOPING_ID } from './constants';
+import { useAppSelector } from 'src/views/store';
 
 interface ScopingTreePanelProps {
   chartId: number | undefined;
@@ -62,7 +62,7 @@ const ChartSelect = ({
   chartConfigs: ChartConfiguration;
 }) => {
   const theme = useTheme();
-  const layout = useSelector<RootState, DashboardLayout>(
+  const layout = useAppSelector<RootState, DashboardLayout>(
     state => state.dashboardLayout.present,
   );
   const options: SelectOptionsType = useMemo(() => {
@@ -141,7 +141,7 @@ export const ScopingTreePanel = ({
   chartConfigs,
 }: ScopingTreePanelProps) => {
   const theme = useTheme();
-  const isCrossFiltersEnabled = useSelector<RootState, boolean>(
+  const isCrossFiltersEnabled = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.crossFiltersEnabled,
   );
   return (

@@ -18,7 +18,6 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { QueryObjectFilterClause } from '@superset-ui/core';
 import { removeDataMask, updateDataMask } from 'src/dataMask/actions';
@@ -35,9 +34,10 @@ import {
   UrlFilterIndicator,
 } from './urlFilterUtils';
 import UrlFiltersVerticalCollapse from './VerticalCollapse';
+import { useAppDispatch } from 'src/views/store';
 
 const UrlFiltersVertical = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const [urlFilters, setUrlFilters] = useState<UrlFilterIndicator[]>(() =>

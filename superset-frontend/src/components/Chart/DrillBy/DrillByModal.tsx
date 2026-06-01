@@ -31,7 +31,6 @@ import {
 } from '@superset-ui/core';
 import { Alert } from '@apache-superset/core/components';
 import { css, useTheme } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -63,6 +62,7 @@ import { useContextMenu } from '../ChartContextMenu/useContextMenu';
 import { getChartDataRequest, handleChartDataResponse } from '../chartAction';
 import { useDisplayModeToggle } from './useDisplayModeToggle';
 import { useResultsTableView } from './useResultsTableView';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 const DEFAULT_ADHOC_FILTER_FIELD_NAME = 'adhoc_filters';
 interface ModalFooterProps {
@@ -75,7 +75,7 @@ interface DrillByBreadcrumb {
 }
 
 const ModalFooter = ({ formData, closeModal }: ModalFooterProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { addDangerToast } = useToasts();
   const theme = useTheme();
   const [url, setUrl] = useState('');
@@ -87,7 +87,7 @@ const ModalFooter = ({ formData, closeModal }: ModalFooterProps) => {
       }),
     );
   }, [dispatch, formData.slice_id]);
-  const canExplore = useSelector((state: RootState) =>
+  const canExplore = useAppSelector((state: RootState) =>
     findPermission('can_explore', 'Superset', state.user?.roles),
   );
 
@@ -174,7 +174,7 @@ export default function DrillByModal({
   onHideModal,
   canDownload,
 }: DrillByModalProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const theme = useTheme();
   const { addDangerToast } = useToasts();
   const [isChartDataLoading, setIsChartDataLoading] = useState(true);
@@ -480,7 +480,7 @@ export default function DrillByModal({
     additionalConfig,
   );
 
-  const chartName = useSelector<RootState, string | undefined>(state => {
+  const chartName = useAppSelector<RootState, string | undefined>(state => {
     const chartLayoutItem = Object.values(state.dashboardLayout.present).find(
       layoutItem => layoutItem.meta?.chartId === formData.slice_id,
     );

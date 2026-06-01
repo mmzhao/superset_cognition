@@ -17,10 +17,10 @@
  * under the License.
  */
 
-import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'src/dashboard/types';
 import getChartAndLabelComponentIdFromPath from 'src/dashboard/util/getChartAndLabelComponentIdFromPath';
+import { useAppSelector } from 'src/views/store';
 
 const filterOutlinedSelector = createSelector(
   [
@@ -38,6 +38,6 @@ const filterOutlinedSelector = createSelector(
   }),
 );
 export const useFilterOutlined = () =>
-  useSelector<RootState, { outlinedFilterId: string; lastUpdated: number }>(
+  useAppSelector<RootState, { outlinedFilterId: string; lastUpdated: number }>(
     filterOutlinedSelector,
   );

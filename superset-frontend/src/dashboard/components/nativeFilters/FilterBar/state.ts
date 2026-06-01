@@ -17,7 +17,6 @@
  * under the License.
  */
 /* eslint-disable no-param-reassign */
-import { useSelector } from 'react-redux';
 import {
   DataMaskState,
   DataMaskStateWithId,
@@ -34,9 +33,10 @@ import {
   isNativeFilter,
 } from '../FiltersConfigModal/utils';
 import { useFilterConfiguration } from '../state';
+import { useAppSelector } from 'src/views/store';
 
 export const useFilters = () => {
-  const preselectedNativeFilters = useSelector<any, Filters>(
+  const preselectedNativeFilters = useAppSelector<any, Filters>(
     state => state.dashboardState?.preselectNativeFilters,
   );
   const filterConfiguration = useFilterConfiguration();
@@ -58,7 +58,7 @@ export const useFilters = () => {
 };
 
 export const useNativeFiltersDataMask = () => {
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
 
@@ -77,7 +77,7 @@ export const useNativeFiltersDataMask = () => {
 };
 
 export const useAllAppliedDataMask = () => {
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
 
@@ -126,7 +126,7 @@ export const useFilterUpdates = (
 export const useInitialization = () => {
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const filters = useFilters();
-  const charts = useSelector<RootState, ChartsState>(state => state.charts);
+  const charts = useAppSelector<RootState, ChartsState>(state => state.charts);
 
   // We need to know how much charts now shown on dashboard to know how many of all charts should be loaded
   let numberOfLoadingCharts = 0;

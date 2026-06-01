@@ -19,8 +19,8 @@
 import { useMemo, FC } from 'react';
 
 import { bindActionCreators } from 'redux';
-import { useSelector, shallowEqual } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import { MenuDotsDropdown } from '@superset-ui/core/components';
 import { Menu, MenuItemType } from '@superset-ui/core/components/Menu';
 import { t } from '@apache-superset/core/translation';
@@ -79,14 +79,14 @@ const STATE_ICONS: Record<string, FC<IconType>> = {
 
 const SqlEditorTabHeader: FC<Props> = ({ queryEditor }) => {
   const theme = useTheme();
-  const qe = useSelector<SqlLabRootState, QueryEditor>(
+  const qe = useAppSelector<SqlLabRootState, QueryEditor>(
     ({ sqlLab: { unsavedQueryEditor } }) => ({
       ...queryEditor,
       ...(queryEditor.id === unsavedQueryEditor?.id && unsavedQueryEditor),
     }),
     shallowEqual,
   );
-  const queryState = useSelector<SqlLabRootState, QueryState>(
+  const queryState = useAppSelector<SqlLabRootState, QueryState>(
     ({ sqlLab }) => sqlLab.queries[qe.latestQueryId || '']?.state || '',
   );
   const StatusIcon = queryState ? STATE_ICONS[queryState] : STATE_ICONS.running;

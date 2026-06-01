@@ -17,7 +17,6 @@
  * under the License.
  */
 import { memo, useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { useTruncation } from '@superset-ui/core';
 import { css, useTheme } from '@apache-superset/core/theme';
@@ -34,12 +33,13 @@ import {
 import { useFilterDependencies } from './useFilterDependencies';
 import { DependencyValueProps, FilterCardRowProps } from './types';
 import { TooltipWithTruncation } from './TooltipWithTruncation';
+import { useAppDispatch } from 'src/views/store';
 
 const DependencyValue = ({
   dependency,
   hasSeparator,
 }: DependencyValueProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleClick = useCallback(() => {
     dispatch(setDirectPathToChild([dependency.id]));
   }, [dependency.id, dispatch]);

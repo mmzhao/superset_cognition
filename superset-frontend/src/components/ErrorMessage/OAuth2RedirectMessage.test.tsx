@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import * as reduxHooks from 'react-redux';
+import * as storeModule from 'src/views/store';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { render, waitFor } from 'spec/helpers/testing-library';
@@ -56,7 +56,7 @@ jest.mock('src/dashboard/actions/dashboardState', () => ({
 
 // Mock useDispatch
 const mockDispatch = jest.fn();
-jest.spyOn(reduxHooks, 'useDispatch').mockReturnValue(mockDispatch);
+jest.spyOn(storeModule, 'useAppDispatch').mockReturnValue(mockDispatch);
 
 // Capture the channel instance created by the component so tests can drive its
 // onmessage handler and assert it gets closed on unmount.

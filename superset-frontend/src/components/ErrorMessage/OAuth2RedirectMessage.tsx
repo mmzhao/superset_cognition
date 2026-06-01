@@ -18,7 +18,6 @@
  */
 import { useEffect } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { QueryEditor, SqlLabRootState } from 'src/SqlLab/types';
 import { ExplorePageState } from 'src/explore/types';
 import { RootState } from 'src/dashboard/types';
@@ -30,6 +29,7 @@ import { QueryResponse } from '@superset-ui/core';
 
 import type { ErrorMessageComponentProps } from './types';
 import { ErrorAlert } from './ErrorAlert';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 const OAUTH_CHANNEL_NAME = 'oauth';
 const OAUTH_STORAGE_EVENT_KEY = 'oauth2_auth_complete';
@@ -69,14 +69,14 @@ export function OAuth2RedirectMessage({
   const { extra, level } = error;
 
   // state needed for re-running the SQL Lab query
-  const queries = useSelector<
+  const queries = useAppSelector<
     SqlLabRootState,
     Record<string, QueryResponse & { inLocalStorage?: boolean }>
   >(state => state.sqlLab.queries);
-  const queryEditors = useSelector<SqlLabRootState, QueryEditor[]>(
+  const queryEditors = useAppSelector<SqlLabRootState, QueryEditor[]>(
     state => state.sqlLab.queryEditors,
   );
-  const tabHistory = useSelector<SqlLabRootState, string[]>(
+  const tabHistory = useAppSelector<SqlLabRootState, string[]>(
     state => state.sqlLab.tabHistory,
   );
   const qe = queryEditors.find(
@@ -85,19 +85,19 @@ export function OAuth2RedirectMessage({
   const query = qe?.latestQueryId ? queries[qe.latestQueryId] : null;
 
   // state needed for triggering the chart in Explore
-  const chartId = useSelector<ExplorePageState, number | undefined>(
+  const chartId = useAppSelector<ExplorePageState, number | undefined>(
     state => state.explore?.slice?.slice_id,
   );
 
   // state needed for refreshing dashboard
-  const chartList = useSelector<RootState, string[]>(state =>
+  const chartList = useAppSelector<RootState, string[]>(state =>
     Object.keys(state.charts),
   );
-  const dashboardId = useSelector<RootState, number | undefined>(
+  const dashboardId = useAppSelector<RootState, number | undefined>(
     state => state.dashboardInfo?.id,
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleOAuthComplete = (tabId?: string) => {

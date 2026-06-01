@@ -196,7 +196,7 @@ export type RootState = ReturnType<typeof store.getState>;
 // and leaves store.dispatch typed as Dispatch<AnyAction>. The intersection
 // restores thunk support without requiring a wider refactor of the middleware
 // setup.
-export type AppDispatch = ThunkDispatch<RootState, undefined, AnyAction> &
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction> &
   typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

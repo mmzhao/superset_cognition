@@ -22,7 +22,6 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { t } from '@apache-superset/core/translation';
 import { addAlpha, JsonObject, useElementOnScreen } from '@superset-ui/core';
 import { css, styled, useTheme } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import { EmptyState, Loading } from '@superset-ui/core/components';
 import { ErrorBoundary, BasicErrorAlert } from 'src/components';
 import BuilderComponentPane from 'src/dashboard/components/BuilderComponentPane';
@@ -72,6 +71,7 @@ import { getRootLevelTabsComponent, shouldFocusTabs } from './utils';
 import DashboardContainer from './DashboardContainer';
 import { useNativeFilters } from './state';
 import DashboardWrapper from './DashboardWrapper';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 // @z-index-above-dashboard-charts + 1 = 11
 const FiltersPanel = styled.div<{ width: number; hidden: boolean }>`
@@ -362,29 +362,29 @@ const ELEMENT_ON_SCREEN_OPTIONS = {
 };
 
 const DashboardBuilder = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const uiConfig = useUiConfig();
   const theme = useTheme();
 
-  const dashboardId = useSelector<RootState, string>(
+  const dashboardId = useAppSelector<RootState, string>(
     ({ dashboardInfo }) => `${dashboardInfo.id}`,
   );
-  const dashboardLayout = useSelector<RootState, DashboardLayout>(
+  const dashboardLayout = useAppSelector<RootState, DashboardLayout>(
     state => state.dashboardLayout.present,
   );
-  const editMode = useSelector<RootState, boolean>(
+  const editMode = useAppSelector<RootState, boolean>(
     state => state.dashboardState.editMode,
   );
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
-  const dashboardIsSaving = useSelector<RootState, boolean>(
+  const dashboardIsSaving = useAppSelector<RootState, boolean>(
     ({ dashboardState }) => dashboardState.dashboardIsSaving,
   );
-  const fullSizeChartId = useSelector<RootState, number | null>(
+  const fullSizeChartId = useAppSelector<RootState, number | null>(
     state => state.dashboardState.fullSizeChartId,
   );
-  const filterBarOrientation = useSelector<RootState, FilterBarOrientation>(
+  const filterBarOrientation = useAppSelector<RootState, FilterBarOrientation>(
     ({ dashboardInfo }) => dashboardInfo.filterBarOrientation,
   );
 

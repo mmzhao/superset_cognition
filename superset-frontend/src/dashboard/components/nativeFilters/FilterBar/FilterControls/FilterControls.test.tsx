@@ -39,10 +39,10 @@ const mockStoreForCustomization = {
   },
 };
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(selector => selector(mockStoreForCustomization)),
-  useDispatch: () => jest.fn(),
+jest.mock('src/views/store', () => ({
+  ...jest.requireActual('src/views/store'),
+  useAppSelector: jest.fn(selector => selector(mockStoreForCustomization)),
+  useAppDispatch: () => jest.fn(),
 }));
 
 const defaultProps = {

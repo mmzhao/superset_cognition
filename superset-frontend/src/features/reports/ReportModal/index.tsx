@@ -29,7 +29,6 @@ import { t } from '@apache-superset/core/translation';
 import { getClientErrorObject, VizType } from '@superset-ui/core';
 import { Alert } from '@apache-superset/core/components';
 import { SupersetTheme } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   editReport,
   subscribeReport,
@@ -54,6 +53,7 @@ import { reportSelector } from 'src/views/CRUD/hooks';
 import { StyledInputContainer } from 'src/features/alerts/AlertReportModal';
 import { CreationMethod } from './HeaderReportDropdown';
 import {
+import { useAppDispatch, useAppSelector } from 'src/views/store';
   antDErrorAlertStyles,
   CustomWidthHeaderStyle,
   StyledModal,
@@ -157,9 +157,9 @@ function ReportModal({
   );
   const [cronError, setCronError] = useState<CronError>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // Report fetch logic
-  const report = useSelector<any, ReportObject>(state => {
+  const report = useAppSelector<any, ReportObject>(state => {
     const resourceType = dashboardId
       ? CreationMethod.Dashboards
       : CreationMethod.Charts;

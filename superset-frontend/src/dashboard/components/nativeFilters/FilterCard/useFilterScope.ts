@@ -17,13 +17,13 @@
  * under the License.
  */
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { Layout, LayoutItem, RootState } from 'src/dashboard/types';
 import { DASHBOARD_ROOT_ID } from 'src/dashboard/util/constants';
 import { CHART_TYPE } from 'src/dashboard/util/componentTypes';
 import { useChartIds } from 'src/dashboard/util/charts/useChartIds';
 import { FilterElement } from '../FilterBar/FilterControls/types';
+import { useAppSelector } from 'src/views/store';
 
 const extractTabLabel = (tab?: LayoutItem) =>
   tab?.meta?.text || tab?.meta?.defaultText || '';
@@ -31,7 +31,7 @@ const extractChartLabel = (chart?: LayoutItem) =>
   chart?.meta?.sliceNameOverride || chart?.meta?.sliceName || chart?.id || '';
 
 export const useFilterScope = (filter: FilterElement) => {
-  const layout = useSelector<RootState, Layout>(
+  const layout = useAppSelector<RootState, Layout>(
     state => state.dashboardLayout.present,
   );
   const chartIds = useChartIds();

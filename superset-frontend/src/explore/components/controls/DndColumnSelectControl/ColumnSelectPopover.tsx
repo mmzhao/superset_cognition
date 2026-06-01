@@ -26,7 +26,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { editors } from '@apache-superset/core';
 import { t } from '@apache-superset/core/translation';
 import {
@@ -57,6 +56,7 @@ import {
 } from 'src/explore/constants';
 import { ExplorePageState } from 'src/explore/types';
 import useResizeButton from './useResizeButton';
+import { useAppSelector } from 'src/views/store';
 
 const TABS_KEYS = {
   SAVED: 'saved',
@@ -139,10 +139,10 @@ const ColumnSelectPopover = ({
   datasource,
 }: ColumnSelectPopoverProps) => {
   // const theme = useTheme(); // Unused variable
-  const datasourceType = useSelector<ExplorePageState, string | undefined>(
+  const datasourceType = useAppSelector<ExplorePageState, string | undefined>(
     state => state.explore.datasource.type,
   );
-  const compatibleDimensions = useSelector<
+  const compatibleDimensions = useAppSelector<
     ExplorePageState,
     string[] | null | undefined
   >(state => state.explore.compatibleDimensions);

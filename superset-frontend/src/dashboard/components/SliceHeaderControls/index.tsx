@@ -39,7 +39,6 @@ import {
   QueryFormData,
 } from '@superset-ui/core';
 import { css, useTheme, styled } from '@apache-superset/core/theme';
-import { useSelector } from 'react-redux';
 import { Menu, MenuItem } from '@superset-ui/core/components/Menu';
 import {
   NoAnimationDropdown,
@@ -64,6 +63,7 @@ import { useCrossFiltersScopingModal } from '../nativeFilters/FilterBar/CrossFil
 import { ViewResultsModalTrigger } from './ViewResultsModalTrigger';
 import { Global } from '@emotion/react';
 import { fullscreenStyles } from './Styles';
+import { useAppSelector } from 'src/views/store';
 
 const RefreshTooltip = styled.div`
   ${({ theme }) => css`
@@ -180,7 +180,7 @@ const SliceHeaderControls = (
   const theme = useTheme();
 
   const canEditCrossFilters =
-    useSelector<RootState, boolean>(
+    useAppSelector<RootState, boolean>(
       ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
     ) &&
     getChartMetadataRegistry()

@@ -21,13 +21,13 @@ import {
   JsonObject,
   customTimeRangeDecode,
 } from '@superset-ui/core';
-import { useSelector } from 'react-redux';
 import {
   COMMON_RANGE_VALUES_SET,
   CALENDAR_RANGE_VALUES_SET,
   CURRENT_RANGE_VALUES_SET,
 } from '.';
 import { FrameType } from '../types';
+import { useAppSelector } from 'src/views/store';
 
 export const guessFrame = (timeRange: string): FrameType => {
   if (COMMON_RANGE_VALUES_SET.has(timeRange)) {
@@ -50,7 +50,7 @@ export const guessFrame = (timeRange: string): FrameType => {
 
 export function useDefaultTimeFilter() {
   return (
-    useSelector(
+    useAppSelector(
       (state: JsonObject) => state?.common?.conf?.DEFAULT_TIME_FILTER,
     ) ?? NO_TIME_RANGE
   );

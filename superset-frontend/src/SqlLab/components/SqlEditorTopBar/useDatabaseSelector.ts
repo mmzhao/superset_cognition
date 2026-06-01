@@ -17,8 +17,7 @@
  * under the License.
  */
 import { useEffect, useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 import { SqlLabRootState } from 'src/SqlLab/types';
 import {
@@ -38,7 +37,7 @@ import {
 } from 'src/utils/localStorageHelpers';
 
 export default function useDatabaseSelector(queryEditorId: string) {
-  const databases = useSelector<
+  const databases = useAppSelector<
     SqlLabRootState,
     SqlLabRootState['sqlLab']['databases']
   >(({ sqlLab }) => sqlLab.databases);

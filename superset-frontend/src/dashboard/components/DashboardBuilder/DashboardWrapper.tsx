@@ -21,10 +21,10 @@ import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { css, styled } from '@apache-superset/core/theme';
 import { Constants } from '@superset-ui/core/components';
 import { RootState } from 'src/dashboard/types';
-import { useSelector } from 'react-redux';
 import { useDragDropManager } from 'react-dnd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
+import { useAppSelector } from 'src/views/store';
 
 const StyledDiv = styled.div`
   ${({ theme }) => css`
@@ -114,7 +114,7 @@ const StyledDiv = styled.div`
 `;
 
 const DashboardWrapper: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const editMode = useSelector<RootState, boolean>(
+  const editMode = useAppSelector<RootState, boolean>(
     state => state.dashboardState.editMode,
   );
   const dragDropManager = useDragDropManager();

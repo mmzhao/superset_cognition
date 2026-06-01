@@ -36,8 +36,8 @@ import { fetchObjectsByTagIds, fetchSingleTag } from 'src/features/tags/tags';
 import getOwnerName from 'src/utils/getOwnerName';
 import { TaggedObject, TaggedObjects } from 'src/types/TaggedObject';
 import { findPermission } from 'src/utils/findPermission';
-import { useSelector } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
+import { useAppSelector } from 'src/views/store';
 
 const additionalItemsStyles = (theme: SupersetTheme) => css`
   display: flex;
@@ -103,7 +103,7 @@ function AllEntities() {
     query: [],
   });
 
-  const canEditTag = useSelector((state: RootState) =>
+  const canEditTag = useAppSelector((state: RootState) =>
     findPermission('can_write', 'Tag', state.user?.roles),
   );
 

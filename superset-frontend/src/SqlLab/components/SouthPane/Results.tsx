@@ -17,7 +17,7 @@
  * under the License.
  */
 import { FC, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { EmptyState } from '@superset-ui/core/components';
 import { t } from '@apache-superset/core/translation';
 import { FeatureFlag, isFeatureEnabled } from '@superset-ui/core';
@@ -28,6 +28,7 @@ import { SqlLabRootState } from 'src/SqlLab/types';
 import ResultSet from '../ResultSet';
 import { LOCALSTORAGE_MAX_QUERY_AGE_MS } from '../../constants';
 import QueryStatusBar from '../QueryStatusBar';
+import { useAppSelector } from 'src/views/store';
 
 type Props = {
   latestQueryId?: string;
@@ -51,11 +52,11 @@ const Results: FC<Props> = ({
   displayLimit,
   defaultQueryLimit,
 }) => {
-  const databases = useSelector(
+  const databases = useAppSelector(
     ({ sqlLab: { databases } }: SqlLabRootState) => databases,
     shallowEqual,
   );
-  const queries = useSelector(
+  const queries = useAppSelector(
     ({ sqlLab: { queries } }: SqlLabRootState) => queries,
     shallowEqual,
   );

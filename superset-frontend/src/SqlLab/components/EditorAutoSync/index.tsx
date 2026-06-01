@@ -19,8 +19,7 @@
 
 import { useRef, useEffect, FC, useMemo } from 'react';
 
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import { logging } from '@apache-superset/core/utils';
 import {
   SqlLabRootState,
@@ -67,7 +66,7 @@ export function filterUnsavedQueryEditorList(
 }
 
 const EditorAutoSync: FC = () => {
-  const queryEditors = useSelector<SqlLabRootState, QueryEditor[]>(
+  const queryEditors = useAppSelector<SqlLabRootState, QueryEditor[]>(
     state => state.sqlLab.queryEditors,
   );
   const queryEditorsById = useMemo(
@@ -81,22 +80,22 @@ const EditorAutoSync: FC = () => {
       ),
     [queryEditors],
   );
-  const unsavedQueryEditor = useSelector<SqlLabRootState, UnsavedQueryEditor>(
+  const unsavedQueryEditor = useAppSelector<SqlLabRootState, UnsavedQueryEditor>(
     state => state.sqlLab.unsavedQueryEditor,
   );
-  const editorTabLastUpdatedAt = useSelector<SqlLabRootState, number>(
+  const editorTabLastUpdatedAt = useAppSelector<SqlLabRootState, number>(
     state => state.sqlLab.editorTabLastUpdatedAt,
   );
   const dispatch = useAppDispatch();
   const lastSavedTimestampRef = useRef<number>(editorTabLastUpdatedAt);
 
-  const currentQueryEditorId = useSelector<SqlLabRootState, string>(
+  const currentQueryEditorId = useAppSelector<SqlLabRootState, string>(
     ({ sqlLab }) => sqlLab.tabHistory.slice(-1)[0] || '',
   );
-  const lastUpdatedActiveTab = useSelector<SqlLabRootState, string>(
+  const lastUpdatedActiveTab = useAppSelector<SqlLabRootState, string>(
     ({ sqlLab }) => sqlLab.lastUpdatedActiveTab,
   );
-  const destroyedQueryEditors = useSelector<
+  const destroyedQueryEditors = useAppSelector<
     SqlLabRootState,
     Record<string, number>
   >(({ sqlLab }) => sqlLab.destroyedQueryEditors);

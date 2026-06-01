@@ -26,7 +26,7 @@ import {
 import { styled, css, SupersetTheme } from '@apache-superset/core/theme';
 import { t } from '@apache-superset/core/translation';
 import { Global } from '@emotion/react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { LOG_ACTIONS_TOGGLE_EDIT_DASHBOARD } from 'src/logger/LogUtils';
 import { Icons } from '@superset-ui/core/components/Icons';
@@ -98,6 +98,7 @@ import { useHeaderActionsMenu } from './useHeaderActionsDropdownMenu';
 import { useHeaderAutoRefresh } from './useHeaderAutoRefresh';
 import AutoRefreshIndicator from '../AutoRefreshIndicator';
 import { RefreshButton } from '../RefreshButton';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 type DashboardPropertiesUpdate = {
   slug?: string;
@@ -221,7 +222,7 @@ const discardChanges = () => {
 };
 
 const Header = (): JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [didNotifyMaxUndoHistoryToast, setDidNotifyMaxUndoHistoryToast] =
     useState(false);
   const [emphasizeUndo, setEmphasizeUndo] = useState(false);
@@ -232,19 +233,19 @@ const Header = (): JSX.Element => {
   const [showingReportModal, setShowingReportModal] = useState(false);
   const [currentReportDeleting, setCurrentReportDeleting] =
     useState<AlertObject | null>(null);
-  const dashboardInfo = useSelector(
+  const dashboardInfo = useAppSelector(
     (state: HeaderRootState) => state.dashboardInfo,
   );
-  const layout = useSelector(
+  const layout = useAppSelector(
     (state: HeaderRootState) => state.dashboardLayout.present,
   );
-  const undoLength = useSelector(
+  const undoLength = useAppSelector(
     (state: HeaderRootState) => state.dashboardLayout.past.length,
   );
-  const redoLength = useSelector(
+  const redoLength = useAppSelector(
     (state: HeaderRootState) => state.dashboardLayout.future.length,
   );
-  const user = useSelector((state: HeaderRootState) => state.user);
+  const user = useAppSelector((state: HeaderRootState) => state.user);
   const chartIds = useChartIds();
 
   const {
@@ -260,7 +261,7 @@ const Header = (): JSX.Element => {
     maxUndoHistoryExceeded,
     editMode,
     lastModifiedTime,
-  } = useSelector(
+  } = useAppSelector(
     (state: HeaderRootState) => ({
       expandedSlices: state.dashboardState.expandedSlices ?? {},
       refreshFrequency: state.dashboardState.refreshFrequency ?? 0,
@@ -278,7 +279,7 @@ const Header = (): JSX.Element => {
     }),
     shallowEqual,
   );
-  const isLoading = useSelector((state: HeaderRootState) =>
+  const isLoading = useAppSelector((state: HeaderRootState) =>
     Object.values(state.charts).some(chart => {
       const start = chart.chartUpdateStartTime ?? 0;
       const end = chart.chartUpdateEndTime ?? 0;

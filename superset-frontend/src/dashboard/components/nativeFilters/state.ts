@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { useCallback, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import {
@@ -33,6 +32,7 @@ import { ActiveTabs, DashboardLayout, RootState } from '../../types';
 import { CHART_TYPE, TAB_TYPE } from '../../util/componentTypes';
 import { isChartCustomizationId } from './FiltersConfigModal/utils';
 import {
+import { useAppSelector } from 'src/views/store';
   migrateChartCustomizationArray,
   isLegacyChartCustomizationFormat,
 } from '../../util/migrateChartCustomization';
@@ -64,7 +64,7 @@ export const selectFilterConfiguration: (
 );
 
 export function useFilterConfiguration() {
-  return useSelector(selectFilterConfiguration);
+  return useAppSelector(selectFilterConfiguration);
 }
 
 export const selectChartCustomizationFromRedux: (
@@ -81,7 +81,7 @@ export const selectChartCustomizationFromRedux: (
 );
 
 export function useChartCustomizationFromRedux() {
-  return useSelector(selectChartCustomizationFromRedux);
+  return useAppSelector(selectChartCustomizationFromRedux);
 }
 
 const selectDashboardChartIds = createSelector(
@@ -127,7 +127,7 @@ const selectChartCustomizationConfiguration = createSelector(
 );
 
 export function useChartCustomizationConfiguration() {
-  return useSelector(selectChartCustomizationConfiguration);
+  return useAppSelector(selectChartCustomizationConfiguration);
 }
 
 export function useFilterConfigMap() {
@@ -166,7 +166,7 @@ export function useChartCustomizationConfigMap() {
 }
 
 export function useDashboardLayout() {
-  return useSelector<RootState, DashboardLayout>(
+  return useAppSelector<RootState, DashboardLayout>(
     state => state.dashboardLayout?.present,
   );
 }
@@ -181,7 +181,7 @@ export function useDashboardHasTabs() {
 }
 
 function useActiveDashboardTabs() {
-  return useSelector<RootState, ActiveTabs>(
+  return useAppSelector<RootState, ActiveTabs>(
     state => state.dashboardState?.activeTabs,
   );
 }

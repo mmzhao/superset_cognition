@@ -20,7 +20,6 @@ import { useState, useMemo, useCallback, useEffect, useRef, memo } from 'react';
 
 import { ResizeCallback, ResizeStartCallback } from 're-resizable';
 import cx from 'classnames';
-import { useSelector } from 'react-redux';
 import { css, useTheme } from '@apache-superset/core/theme';
 import { LayoutItem, RootState } from 'src/dashboard/types';
 import AnchorLink from 'src/dashboard/components/AnchorLink';
@@ -35,6 +34,7 @@ import useFilterFocusHighlightStyles from 'src/dashboard/util/useFilterFocusHigh
 import { AntdThemeProvider } from '@superset-ui/core/components';
 import { COLUMN_TYPE, ROW_TYPE } from 'src/dashboard/util/componentTypes';
 import {
+import { useAppSelector } from 'src/views/store';
   GRID_BASE_UNIT,
   GRID_GUTTER_SIZE,
   GRID_MIN_COLUMN_COUNT,
@@ -110,10 +110,10 @@ const ChartHolder = ({
   const chartHolderRef = useRef<HTMLDivElement | null>(null);
 
   const focusHighlightStyles = useFilterFocusHighlightStyles(chartId ?? 0);
-  const directPathToChild = useSelector(
+  const directPathToChild = useAppSelector(
     (state: RootState) => state.dashboardState.directPathToChild,
   );
-  const directPathLastUpdated = useSelector(
+  const directPathLastUpdated = useAppSelector(
     (state: RootState) => state.dashboardState.directPathLastUpdated ?? 0,
   );
 

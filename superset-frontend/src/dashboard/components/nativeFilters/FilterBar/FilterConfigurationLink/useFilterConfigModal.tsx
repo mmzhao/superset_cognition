@@ -18,11 +18,11 @@
  */
 
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { setFilterConfiguration } from 'src/dashboard/actions/nativeFilters';
 import { saveChartCustomization } from 'src/dashboard/actions/chartCustomizationActions';
 import { SaveChangesType } from 'src/dashboard/components/nativeFilters/FiltersConfigModal/types';
 import FiltersConfigModal from 'src/dashboard/components/nativeFilters/FiltersConfigModal/FiltersConfigModal';
+import { useAppDispatch } from 'src/views/store';
 
 interface UseFilterConfigModalProps {
   createNewOnOpen?: boolean;
@@ -43,7 +43,7 @@ export const useFilterConfigModal = ({
   dashboardId,
   initialFilterId,
 }: UseFilterConfigModalProps): UseFilterConfigModalReturn => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isFilterConfigModalOpen, setIsFilterConfigModalOpen] = useState(false);
 
   const openFilterConfigModal = useCallback(() => {

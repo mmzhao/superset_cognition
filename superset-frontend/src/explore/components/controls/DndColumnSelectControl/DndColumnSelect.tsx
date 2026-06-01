@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { AdhocColumn, QueryFormColumn, isAdhocColumn } from '@superset-ui/core';
 import { tn } from '@apache-superset/core/translation';
@@ -32,6 +31,7 @@ import { ExplorePageState } from 'src/explore/types';
 import ColumnSelectPopoverTrigger from './ColumnSelectPopoverTrigger';
 import { DndControlProps } from './types';
 import { datasetLabelLower } from 'src/features/semanticLayers/label';
+import { useAppSelector } from 'src/views/store';
 
 export type DndColumnSelectProps = DndControlProps<QueryFormColumn> & {
   options: ColumnMeta[];
@@ -54,7 +54,7 @@ function DndColumnSelect(props: DndColumnSelectProps) {
   } = props;
 
   // Semantic views do not support arbitrary SQL expressions as dimensions.
-  const datasourceType = useSelector<ExplorePageState, string | undefined>(
+  const datasourceType = useAppSelector<ExplorePageState, string | undefined>(
     state => state.explore.datasource?.type,
   );
   const effectiveDisabledTabs = useMemo(

@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { isDefined, NativeFilterScope } from '@superset-ui/core';
 import { Modal } from '@superset-ui/core/components';
@@ -37,6 +36,7 @@ import { useChartLayoutItems } from 'src/dashboard/util/useChartLayoutItems';
 import { ModalTitleWithIcon } from 'src/components/ModalTitleWithIcon';
 import { ScopingModalContent } from './ScopingModalContent';
 import { NEW_CHART_SCOPING_ID } from './constants';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 const getUpdatedGloballyScopedChartsInScope = (
   configs: ChartConfiguration,
@@ -80,11 +80,11 @@ export const ScopingModal = ({
   isVisible,
   closeModal,
 }: ScopingModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const chartLayoutItems = useChartLayoutItems();
   const chartIds = useChartIds();
   const [currentChartId, setCurrentChartId] = useState(initialChartId);
-  const initialChartConfig = useSelector<RootState, ChartConfiguration>(
+  const initialChartConfig = useAppSelector<RootState, ChartConfiguration>(
     state => state.dashboardInfo.metadata?.chart_configuration || {},
   );
   const defaultGlobalChartConfig = useMemo(
@@ -95,7 +95,7 @@ export const ScopingModal = ({
     [chartIds],
   );
 
-  const initialGlobalChartConfig = useSelector<
+  const initialGlobalChartConfig = useAppSelector<
     RootState,
     GlobalChartCrossFilterConfig
   >(

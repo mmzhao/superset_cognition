@@ -55,7 +55,6 @@ import {
   PluginFilterSelectCustomizeProps,
   SelectFilterOperatorType,
 } from 'src/filters/components/Select/types';
-import { useSelector } from 'react-redux';
 import { getChartDataRequest } from 'src/components/Chart/chartAction';
 import {
   Constants,
@@ -121,6 +120,7 @@ import {
 } from './constants';
 import DependencyList from './DependencyList';
 import { datasetLabel } from 'src/features/semanticLayers/label';
+import { useAppSelector } from 'src/views/store';
 
 const FORM_ITEM_WIDTH = 260;
 
@@ -313,7 +313,7 @@ const FiltersConfigForm = (
   const [activeTabKey, setActiveTabKey] = useState<string>(
     FilterTabs.configuration.key,
   );
-  const dashboardId = useSelector<RootState, number>(
+  const dashboardId = useAppSelector<RootState, number>(
     state => state.dashboardInfo.id,
   );
   const [undoFormValues, setUndoFormValues] = useState<Record<
@@ -357,11 +357,11 @@ const FiltersConfigForm = (
     )
     .map(([key]) => key as keyof typeof CHART_CUSTOMIZATION_SUPPORTED_TYPES);
 
-  const loadedDatasets = useSelector<RootState, DatasourcesState>(
+  const loadedDatasets = useAppSelector<RootState, DatasourcesState>(
     ({ datasources }) => datasources,
   );
 
-  const charts = useSelector<RootState, ChartsState>(({ charts }) => charts);
+  const charts = useAppSelector<RootState, ChartsState>(({ charts }) => charts);
 
   const doLoadedDatasetsHaveTemporalColumns = useMemo(
     () =>

@@ -43,7 +43,6 @@ import {
   Tooltip,
   FormItem,
 } from '@superset-ui/core/components';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
 import { setPendingChartCustomization } from 'src/dashboard/actions/chartCustomizationActions';
 import { TooltipWithTruncation } from 'src/dashboard/components/nativeFilters/FilterCard/TooltipWithTruncation';
@@ -52,6 +51,7 @@ import { cachedSupersetGet } from 'src/utils/cachedSupersetGet';
 import { dispatchChartCustomizationHoverAction } from './utils';
 import { mergeExtraFormData } from '../../utils';
 import {
+import { useAppDispatch, useAppSelector } from 'src/views/store';
   datasetLabel as getDatasetLabel,
   datasetLabelLower,
 } from 'src/features/semanticLayers/label';
@@ -297,7 +297,7 @@ const GroupByFilterCard: FC<GroupByFilterCardProps> = ({
   >([]);
   const [datasetName, setDatasetName] = useState<string | undefined>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isHorizontalLayout = orientation === 'horizontal';
 
@@ -320,7 +320,7 @@ const GroupByFilterCard: FC<GroupByFilterCardProps> = ({
     [customizationItem.controlValues?.enableEmptyFilter],
   );
 
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
 
@@ -412,7 +412,7 @@ const GroupByFilterCard: FC<GroupByFilterCardProps> = ({
     ],
   );
 
-  const filters = useSelector<RootState, Filters>(
+  const filters = useAppSelector<RootState, Filters>(
     state => state.nativeFilters.filters,
   );
 

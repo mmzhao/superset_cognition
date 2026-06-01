@@ -18,7 +18,6 @@
  */
 import { useState, useEffect, FC, PureComponent, useMemo } from 'react';
 import rison from 'rison';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useQueryParams, BooleanParam } from 'use-query-params';
 import { isEmpty } from 'lodash';
@@ -66,6 +65,7 @@ import {
   RightMenuProps,
 } from './types';
 import { NAVBAR_MENU_POPUP_OFFSET } from './commonMenuData';
+import { useAppSelector } from 'src/views/store';
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -119,10 +119,10 @@ const RightMenu = ({
   }) => void;
 }) => {
   const theme = useTheme();
-  const user = useSelector<any, UserWithPermissionsAndRoles>(
+  const user = useAppSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
-  const dashboardId = useSelector<RootState, number | undefined>(
+  const dashboardId = useAppSelector<RootState, number | undefined>(
     state => state.dashboardInfo?.id,
   );
   const userValues = user || {};
@@ -133,7 +133,7 @@ const RightMenu = ({
     EXCEL_EXTENSIONS,
     ALLOWED_EXTENSIONS,
     HAS_GSHEETS_INSTALLED,
-  } = useSelector<any, ExtensionConfigs>(state => state.common.conf);
+  } = useAppSelector<any, ExtensionConfigs>(state => state.common.conf);
   const [showDatabaseModal, setShowDatabaseModal] = useState<boolean>(false);
   const [showCSVUploadModal, setShowCSVUploadModal] = useState<boolean>(false);
   const [showExcelUploadModal, setShowExcelUploadModal] =

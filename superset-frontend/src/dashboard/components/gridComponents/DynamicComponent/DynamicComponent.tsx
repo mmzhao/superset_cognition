@@ -21,7 +21,7 @@ import { t } from '@apache-superset/core/translation';
 import { DashboardComponentMetadata, JsonObject } from '@superset-ui/core';
 import backgroundStyleOptions from 'src/dashboard/util/backgroundStyleOptions';
 import cx from 'classnames';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ResizeCallback, ResizeStartCallback } from 're-resizable';
 import type { ConnectDragSource } from 'react-dnd';
 import { Draggable } from '../../dnd/DragDroppable';
@@ -38,6 +38,7 @@ import DeleteComponentButton from '../../DeleteComponentButton';
 import BackgroundStyleDropdown from '../../menu/BackgroundStyleDropdown';
 import dashboardComponents from '../../../../visualizations/presets/dashboardComponents';
 import { RootState } from '../../../types';
+import { useAppSelector } from 'src/views/store';
 
 type DynamicComponentProps = {
   component: JsonObject;
@@ -101,7 +102,7 @@ const DynamicComponent: FC<DynamicComponentProps> = ({
   };
 
   const { Component } = dashboardComponents.get(component.meta.componentKey);
-  const dashboardData = useSelector<RootState, DashboardComponentMetadata>(
+  const dashboardData = useAppSelector<RootState, DashboardComponentMetadata>(
     ({ nativeFilters, dataMask }) => ({
       nativeFilters,
       dataMask,

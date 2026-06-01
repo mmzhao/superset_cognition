@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { RootState } from 'src/dashboard/types';
 import getChartIdsFromLayout from '../getChartIdsFromLayout';
+import { useAppSelector } from 'src/views/store';
 
 export const useAllChartIds = () => {
-  const layout = useSelector(
+  const layout = useAppSelector(
     (state: RootState) => state.dashboardLayout.present,
   );
   return useMemo(() => getChartIdsFromLayout(layout), [layout]);
