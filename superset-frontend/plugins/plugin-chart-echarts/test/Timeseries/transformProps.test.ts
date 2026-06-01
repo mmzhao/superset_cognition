@@ -1657,3 +1657,49 @@ test('should assign distinct dash patterns for multiple time offsets consistentl
   // must be different patterns
   expect(symbol1).not.toEqual(symbol2);
 });
+
+test('category axis provides explicit xAxis.data so all string categories render', () => {
+  // Regression test for issue #19 / upstream #35853:
+  // Line chart skips intermediate categories when x-axis is string.
+  const chartProps = createTestChartProps({
+    formData: {
+      metrics: ['total_value'],
+      granularity_sqla: 'ds',
+      x_axis: 'month_id',
+    },
+    queriesData: [
+      createTestQueryData(
+        [
+          { month_id: '202401', total_value: 496 },
+          { month_id: '202402', total_value: 1334 },
+          { month_id: '202403', total_value: 2356 },
+          { month_id: '202404', total_value: 3195 },
+          { month_id: '202405', total_value: 1799 },
+          { month_id: '202408', total_value: 4914 },
+          { month_id: '202409', total_value: 7785 },
+          { month_id: '202410', total_value: 8990 },
+        ],
+        {
+          colnames: ['month_id', 'total_value'],
+          coltypes: [GenericDataType.String, GenericDataType.Numeric],
+        },
+      ),
+    ],
+  });
+
+  const { echartOptions } = transformProps(chartProps);
+  const xAxis = echartOptions.xAxis as { type: string; data?: string[] };
+
+  expect(xAxis.type).toBe(AxisType.Category);
+  expect(xAxis.data).toBeDefined();
+  expect(xAxis.data).toEqual([
+    '202401',
+    '202402',
+    '202403',
+    '202404',
+    '202405',
+    '202408',
+    '202409',
+    '202410',
+  ]);
+});

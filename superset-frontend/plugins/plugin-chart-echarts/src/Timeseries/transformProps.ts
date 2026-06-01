@@ -930,6 +930,19 @@ export default function transformProps(
     ),
   };
 
+  // For category axes, explicitly provide all category values so ECharts
+  // renders every data point. Without this, ECharts auto-collection can
+  // skip intermediate string categories (see issue #19 / upstream #35853).
+  if (xAxisType === AxisType.Category && rawSeries.length > 0) {
+    const categoryIdx = isHorizontal ? 1 : 0;
+    const firstSeriesData = rawSeries[0].data as
+      | [string | number, string | number][]
+      | undefined;
+    if (firstSeriesData?.length) {
+      xAxis.data = firstSeriesData.map(d => d[categoryIdx]);
+    }
+  }
+
   // Adapt y-axis to chart height: three tiers based on available space.
   // >= 100px: full axis with proportional tick count
   // 60-99px: show only min/max boundary labels (splitNumber=1), hide lines/ticks

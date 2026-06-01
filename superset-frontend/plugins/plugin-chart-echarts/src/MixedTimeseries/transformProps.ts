@@ -721,6 +721,18 @@ export default function transformProps(
           ? EchartsTimeseriesSeriesType.Bar
           : undefined,
       ),
+      // For category axes, explicitly provide all category values so ECharts
+      // renders every data point (see issue #19 / upstream #35853).
+      ...(xAxisType === AxisType.Category &&
+      rawSeriesA.length > 0 &&
+      (rawSeriesA[0].data as [string | number, string | number][] | undefined)
+        ?.length
+        ? {
+            data: (
+              rawSeriesA[0].data as [string | number, string | number][]
+            ).map(d => d[0]),
+          }
+        : {}),
     },
     yAxis: [
       {
