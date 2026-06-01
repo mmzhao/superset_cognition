@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { noop } from 'lodash';
 import type { SqlLabRootState } from 'src/SqlLab/types';
 import { css, styled } from '@apache-superset/core/theme';
@@ -35,6 +34,7 @@ import ViewListExtension from 'src/components/ViewListExtension';
 
 import SqlEditorLeftBar from '../SqlEditorLeftBar';
 import StatusBar from '../StatusBar';
+import { useAppSelector } from '../../../views/store';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -66,7 +66,7 @@ const ContentWrapper = styled.div`
 `;
 
 const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const queryEditorId = useSelector<SqlLabRootState, string>(
+  const queryEditorId = useAppSelector(
     ({ sqlLab: { tabHistory } }) => tabHistory.slice(-1)[0],
   );
   const { md } = Grid.useBreakpoint();

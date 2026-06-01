@@ -18,7 +18,6 @@
  */
 import { extendedDayjs as dayjs } from '@superset-ui/core/utils/dates';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ExplorePageState } from 'src/explore/types';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';
@@ -38,6 +37,7 @@ import 'dayjs/locale/nl';
 
 /* eslint-disable no-restricted-imports */
 import { Locale } from 'antd/es/locale';
+import { useAppSelector } from '../views/store';
 
 export const LOCALE_MAPPING = {
   en: () => import('antd/locale/en_US'),
@@ -64,7 +64,7 @@ export const useLocale = (): Locale | undefined | null => {
   >(null);
 
   // Retrieve the locale from Redux store
-  const localFromFlaskBabel = useSelector(
+  const localFromFlaskBabel = useAppSelector(
     (state: ExplorePageState) => state?.common?.locale,
   );
 

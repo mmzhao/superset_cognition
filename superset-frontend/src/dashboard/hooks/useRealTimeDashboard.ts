@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { AutoRefreshStatus } from '../types/autoRefresh';
 import { DashboardState, RootState } from '../types';
 import {
@@ -29,6 +28,7 @@ import {
   setAutoRefreshFetchStartTime,
   setAutoRefreshPauseOnInactiveTab,
 } from '../actions/autoRefresh';
+import { useAppDispatch, useAppSelector } from '../../views/store';
 
 type DashboardStateRoot = {
   dashboardState: Partial<DashboardState>;
@@ -105,45 +105,45 @@ export const selectEffectiveRefreshStatus = (
 };
 
 export const useRealTimeDashboard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // Selectors
-  const isRealTimeDashboard = useSelector(selectIsRealTimeDashboard);
-  const isManuallyPaused = useSelector(selectIsManuallyPaused);
-  const isPaused = useSelector(selectIsPaused);
-  const effectiveStatus = useSelector(selectEffectiveRefreshStatus);
+  const isRealTimeDashboard = useAppSelector(selectIsRealTimeDashboard);
+  const isManuallyPaused = useAppSelector(selectIsManuallyPaused);
+  const isPaused = useAppSelector(selectIsPaused);
+  const effectiveStatus = useAppSelector(selectEffectiveRefreshStatus);
 
-  const lastSuccessfulRefresh = useSelector(
+  const lastSuccessfulRefresh = useAppSelector(
     (state: RootState) => state.dashboardState?.lastSuccessfulRefresh ?? null,
   );
 
-  const lastAutoRefreshTime = useSelector(
+  const lastAutoRefreshTime = useAppSelector(
     (state: RootState) => state.dashboardState?.lastAutoRefreshTime ?? null,
   );
 
-  const lastError = useSelector(
+  const lastError = useAppSelector(
     (state: RootState) => state.dashboardState?.lastRefreshError ?? null,
   );
 
-  const refreshErrorCount = useSelector(
+  const refreshErrorCount = useAppSelector(
     (state: RootState) => state.dashboardState?.refreshErrorCount ?? 0,
   );
 
-  const refreshFrequency = useSelector(
+  const refreshFrequency = useAppSelector(
     (state: RootState) => state.dashboardState?.refreshFrequency ?? 0,
   );
 
-  const autoRefreshFetchStartTime = useSelector(
+  const autoRefreshFetchStartTime = useAppSelector(
     (state: RootState) =>
       state.dashboardState?.autoRefreshFetchStartTime ?? null,
   );
 
-  const autoRefreshPauseOnInactiveTab = useSelector(
+  const autoRefreshPauseOnInactiveTab = useAppSelector(
     (state: RootState) =>
       state.dashboardState?.autoRefreshPauseOnInactiveTab ?? false,
   );
 
-  const isPausedByTab = useSelector(
+  const isPausedByTab = useAppSelector(
     (state: RootState) => state.dashboardState?.autoRefreshPausedByTab ?? false,
   );
 

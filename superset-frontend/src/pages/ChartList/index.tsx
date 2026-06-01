@@ -30,7 +30,6 @@ import { css, styled } from '@apache-superset/core/theme';
 import { useState, useMemo, useCallback } from 'react';
 import rison from 'rison';
 import { uniqBy } from 'lodash';
-import { useSelector } from 'react-redux';
 import {
   createErrorHandler,
   createFetchRelated,
@@ -84,6 +83,7 @@ import { QueryObjectColumns } from 'src/views/CRUD/types';
 import { WIDER_DROPDOWN_WIDTH } from 'src/components/ListView/utils';
 import { Tag } from 'src/components/Tag';
 import { datasetLabel } from 'src/features/semanticLayers/label';
+import { useAppSelector } from '../../views/store';
 
 const FlexRowContainer = styled.div`
   align-items: center;
@@ -192,9 +192,7 @@ function ChartList(props: ChartListProps) {
   } = useListViewResource<Chart>('chart', t('chart'), addDangerToast);
 
   const chartIds = useMemo(() => charts.map(c => c.id), [charts]);
-  const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
-    state => state.user,
-  );
+  const { roles } = useAppSelector(state => state.user);
   const canReadTag = findPermission('can_read', 'Tag', roles);
 
   const [saveFavoriteStatus, favoriteStatus] = useFavoriteStatus(

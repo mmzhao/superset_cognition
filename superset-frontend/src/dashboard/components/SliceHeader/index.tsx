@@ -36,7 +36,6 @@ import {
 import { useUiConfig } from 'src/components/UiConfigContext';
 import { isEmbedded } from 'src/dashboard/util/isEmbedded';
 import { Tooltip, EditableTitle, Icons } from '@superset-ui/core/components';
-import { useSelector } from 'react-redux';
 import SliceHeaderControls from 'src/dashboard/components/SliceHeaderControls';
 import { SliceHeaderControlsProps } from 'src/dashboard/components/SliceHeaderControls/types';
 import FiltersBadge from 'src/dashboard/components/FiltersBadge';
@@ -46,6 +45,7 @@ import { getSliceHeaderTooltip } from 'src/dashboard/util/getSliceHeaderTooltip'
 import { DashboardPageIdContext } from 'src/dashboard/containers/DashboardPage';
 import RowCountLabel from 'src/components/RowCountLabel';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../../views/store';
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -187,18 +187,18 @@ const SliceHeader = forwardRef<HTMLDivElement, SliceHeaderProps>(
     const [headerTooltip, setHeaderTooltip] = useState<ReactNode | null>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     // TODO: change to indicator field after it will be implemented
-    const crossFilterValue = useSelector<RootState, any>(
+    const crossFilterValue = useAppSelector(
       state => state.dataMask[slice?.slice_id]?.filterState?.value,
     );
-    const isCrossFiltersEnabled = useSelector<RootState, boolean>(
+    const isCrossFiltersEnabled = useAppSelector(
       ({ dashboardInfo }) => dashboardInfo.crossFiltersEnabled,
     );
 
-    const firstQueryResponse = useSelector<RootState, QueryData | undefined>(
+    const firstQueryResponse = useAppSelector(
       state => state.charts[slice.slice_id].queriesResponse?.[0],
     );
 
-    const secondQueryResponse = useSelector<RootState, QueryData | undefined>(
+    const secondQueryResponse = useAppSelector(
       state => state.charts[slice.slice_id].queriesResponse?.[1],
     );
 

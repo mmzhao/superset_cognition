@@ -26,12 +26,12 @@ import {
   isCrossFilterScopeGlobal,
   RootState,
 } from 'src/dashboard/types';
-import { useSelector } from 'react-redux';
 import { CHART_TYPE } from 'src/dashboard/util/componentTypes';
 import { Icons } from '@superset-ui/core/components/Icons';
 import { Button } from '@superset-ui/core/components';
 import { FilterTitle } from 'src/dashboard/components/nativeFilters/FiltersConfigModal/FilterTitleContainer';
 import { NEW_CHART_SCOPING_ID } from './constants';
+import { useAppSelector } from '../../../../../../views/store';
 
 const AddButtonContainer = styled.div`
   ${({ theme }) => css`
@@ -101,9 +101,7 @@ export const ChartsScopingListPanel = ({
   addNewCustomScope,
 }: ChartsScopingListPanelProps) => {
   const theme = useTheme();
-  const layout = useSelector<RootState, DashboardLayout>(
-    state => state.dashboardLayout.present,
-  );
+  const layout = useAppSelector(state => state.dashboardLayout.present);
   const customScopedCharts = useMemo(() => {
     const chartLayoutItems = Object.values(layout).filter(
       item => item.type === CHART_TYPE,

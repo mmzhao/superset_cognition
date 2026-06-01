@@ -17,9 +17,9 @@
  * under the License.
  */
 
-import { useSelector } from 'react-redux';
 import { ViewState } from 'src/views/types';
+import { useAppSelector } from '../../views/store';
 
 export function useCommonConf() {
-  return useSelector((state: ViewState) => state?.common?.conf);
+  return useAppSelector((state: ViewState) => state?.common?.conf);
 }

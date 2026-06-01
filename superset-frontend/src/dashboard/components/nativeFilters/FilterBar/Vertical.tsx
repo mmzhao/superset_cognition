@@ -29,7 +29,6 @@ import {
   createContext,
   FC,
 } from 'react';
-import { useSelector } from 'react-redux';
 import cx from 'classnames';
 import { t } from '@apache-superset/core/translation';
 import { styled, useTheme } from '@apache-superset/core/theme';
@@ -46,6 +45,7 @@ import FilterControls from './FilterControls/FilterControls';
 import CrossFiltersVertical from './CrossFilters/Vertical';
 import crossFiltersSelector from './CrossFilters/selectors';
 import UrlFiltersVertical from './UrlFilters/Vertical';
+import { useAppSelector } from '../../../../views/store';
 
 enum SectionType {
   Filters = 'filters',
@@ -177,9 +177,7 @@ const VerticalFilterBar: FC<VerticalBarProps> = ({
     [height],
   );
 
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
-    state => state.dataMask,
-  );
+  const dataMask = useAppSelector(state => state.dataMask);
   const chartIds = useChartIds();
   const chartLayoutItems = useChartLayoutItems();
   const verboseMaps = useChartsVerboseMaps();

@@ -18,7 +18,6 @@
  */
 
 import { renderHook } from '@testing-library/react';
-import { useSelector } from 'react-redux';
 import {
   NativeFilterType,
   Filter,
@@ -31,17 +30,18 @@ import {
   useIsFilterInScope,
   useSelectFiltersInScope,
 } from './state';
+import { useAppSelector } from '../../../views/store';
 
 jest.mock('react-redux', () => {
   const actual = jest.requireActual('react-redux');
   return {
     ...actual,
-    useSelector: jest.fn(),
+    useAppSelector: jest.fn(),
   };
 });
 
 beforeEach(() => {
-  (useSelector as jest.Mock).mockImplementation(selector => {
+  (useAppSelector as jest.Mock).mockImplementation(selector => {
     if (selector.name === 'useActiveDashboardTabs') {
       return ['TAB_1'];
     }
@@ -134,7 +134,7 @@ test('useSelectFiltersInScope should return all filters in scope when no tabs ex
 // Tests for filter scope persistence when chartsInScope is missing
 // (Bug fix: filters incorrectly marked out of scope after editing non-scope properties)
 test('filter without chartsInScope should fall back to rootPath check', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB_1'] },
       dashboardLayout: { present: {} },
@@ -160,7 +160,7 @@ test('filter without chartsInScope should fall back to rootPath check', () => {
 });
 
 test('filter with empty chartsInScope array should check rootPath', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB_1'] },
       dashboardLayout: { present: {} },
@@ -187,7 +187,7 @@ test('filter with empty chartsInScope array should check rootPath', () => {
 });
 
 test('filter without chartsInScope and inactive rootPath should be out of scope', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB_1'] },
       dashboardLayout: { present: {} },
@@ -213,7 +213,7 @@ test('filter without chartsInScope and inactive rootPath should be out of scope'
 });
 
 test('filter with ROOT_ID in rootPath should be in scope when chartsInScope is missing', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['ROOT_ID'] },
       dashboardLayout: { present: {} },
@@ -239,7 +239,7 @@ test('filter with ROOT_ID in rootPath should be in scope when chartsInScope is m
 });
 
 test('useSelectFiltersInScope correctly categorizes filters with missing chartsInScope', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB_1'] },
       dashboardLayout: {
@@ -308,7 +308,7 @@ test('filter with chartsInScope takes precedence over rootPath', () => {
 });
 
 test('filter should be hidden on excluded nested tab even when parent tab is active', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB-Parent1', 'TAB-P1_Child2'] },
       dashboardLayout: {
@@ -362,7 +362,7 @@ test('filter should be hidden on excluded nested tab even when parent tab is act
 });
 
 test('filter should be visible on included nested tab', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB-Parent1', 'TAB-P1_Child1'] },
       dashboardLayout: {
@@ -405,7 +405,7 @@ test('filter should be visible on included nested tab', () => {
 });
 
 test('filter should be visible on top-level tab when charts have no nested parents', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB-Parent2'] },
       dashboardLayout: {
@@ -446,7 +446,7 @@ test('filter should be visible on top-level tab when charts have no nested paren
 });
 
 test('filter with chartsInScope referencing non-existent chart should still work', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB-Parent1'] },
       dashboardLayout: {
@@ -482,7 +482,7 @@ test('filter with chartsInScope referencing non-existent chart should still work
 });
 
 test('filter with mix of existing and non-existent charts in chartsInScope', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) => {
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) => {
     const mockState = {
       dashboardState: { activeTabs: ['TAB-Parent2'] },
       dashboardLayout: {
@@ -519,7 +519,7 @@ test('filter with mix of existing and non-existent charts in chartsInScope', () 
 });
 
 test('useChartCustomizationConfiguration ignores null items in metadata', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) =>
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) =>
     selector({
       dashboardInfo: {
         metadata: {
@@ -561,7 +561,7 @@ test('useChartCustomizationConfiguration ignores null items in metadata', () => 
 });
 
 test('useChartCustomizationConfiguration ignores undefined items in metadata', () => {
-  (useSelector as jest.Mock).mockImplementation((selector: Function) =>
+  (useAppSelector as jest.Mock).mockImplementation((selector: Function) =>
     selector({
       dashboardInfo: {
         metadata: {

@@ -18,9 +18,9 @@
  */
 import { useEffect, FC, ReactNode } from 'react';
 
-import { useDispatch } from 'react-redux';
 import { setStashFormData } from 'src/explore/actions/exploreActions';
 import useEffectEvent from 'src/hooks/useEffectEvent';
+import { useAppDispatch } from '../../../views/store';
 
 type Props = {
   shouldStash: boolean;
@@ -33,7 +33,7 @@ const StashFormDataContainer: FC<Props> = ({
   fieldNames,
   children,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onVisibleUpdate = useEffectEvent((shouldStash: boolean) =>
     dispatch(setStashFormData(shouldStash, fieldNames)),
   );

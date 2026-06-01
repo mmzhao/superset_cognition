@@ -32,7 +32,6 @@ import {
   createFetchDistinct,
   createFetchRelated,
 } from 'src/views/CRUD/utils';
-import { useSelector } from 'react-redux';
 import {
   ConfirmStatusChange,
   DeleteModal,
@@ -66,6 +65,7 @@ import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 import SavedQueryPreviewModal from 'src/features/queries/SavedQueryPreviewModal';
 import { findPermission } from 'src/utils/findPermission';
 import { makeUrl } from 'src/utils/pathUtils';
+import { useAppSelector } from '../../views/store';
 
 const PAGE_SIZE = 25;
 const PASSWORDS_NEEDED_MESSAGE = t(
@@ -125,9 +125,7 @@ function SavedQueryList({
     t('Saved queries'),
     addDangerToast,
   );
-  const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
-    state => state.user,
-  );
+  const { roles } = useAppSelector(state => state.user);
   const canReadTag = findPermission('can_read', 'Tag', roles);
   const [queryCurrentlyDeleting, setQueryCurrentlyDeleting] =
     useState<SavedQueryObject | null>(null);

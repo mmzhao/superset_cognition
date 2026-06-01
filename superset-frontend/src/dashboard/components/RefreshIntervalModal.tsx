@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { styled } from '@apache-superset/core/theme';
 import { Form, Checkbox } from '@superset-ui/core/components';
@@ -28,6 +27,7 @@ import {
   validateRefreshFrequency,
   getRefreshWarningMessage,
 } from './RefreshFrequency';
+import { useAppSelector } from '../../views/store';
 
 const ModalContent = styled.div`
   padding: ${({ theme }) => theme.sizeUnit * 4}px;
@@ -65,12 +65,12 @@ const RefreshIntervalModal = ({
   const [refreshFrequency, setRefreshFrequency] = useState(initialFrequency);
   const [localPauseOnInactiveTab, setLocalPauseOnInactiveTab] =
     useState(pauseOnInactiveTab);
-  const refreshLimit = useSelector(
+  const refreshLimit = useAppSelector(
     (state: RootState) =>
       state.dashboardInfo?.common?.conf
         ?.SUPERSET_DASHBOARD_PERIODICAL_REFRESH_LIMIT,
   );
-  const refreshWarning = useSelector(
+  const refreshWarning = useAppSelector(
     (state: RootState) =>
       state.dashboardInfo?.common?.conf
         ?.SUPERSET_DASHBOARD_PERIODICAL_REFRESH_WARNING_MESSAGE,

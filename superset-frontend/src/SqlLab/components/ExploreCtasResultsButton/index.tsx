@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { t } from '@apache-superset/core/translation';
 import { VizType } from '@superset-ui/core';
 import {
@@ -43,7 +42,7 @@ const ExploreCtasResultsButton = ({
   dbId,
   templateParams,
 }: ExploreCtasResultsButtonProps) => {
-  const errorMessage = useSelector(
+  const errorMessage = useAppSelector(
     (state: SqlLabRootState) => state.sqlLab.errorMessage,
   );
   const dispatch = useAppDispatch();

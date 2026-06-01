@@ -26,7 +26,6 @@ import {
   type Ref,
 } from 'react';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@apache-superset/core/theme';
 import { t } from '@apache-superset/core/translation';
 
@@ -50,6 +49,7 @@ import type {
   DropResult,
   DragItem,
 } from 'src/dashboard/components/dnd/dragDroppableConfig';
+import { useAppDispatch, useAppSelector } from '../../../../views/store';
 
 export const RENDER_TAB = 'RENDER_TAB';
 export const RENDER_TAB_CONTENT = 'RENDER_TAB_CONTENT';
@@ -150,20 +150,22 @@ interface DragDropChildProps {
 }
 
 const Tab = (props: TabProps): ReactElement => {
-  const dispatch = useDispatch();
-  const canEdit = useSelector(
+  const dispatch = useAppDispatch();
+  const canEdit = useAppSelector(
     (state: RootState) => state.dashboardInfo.dash_edit_perm,
   );
-  const dashboardLayout = useSelector(
+  const dashboardLayout = useAppSelector(
     (state: RootState) => state.dashboardLayout.present,
   );
-  const lastRefreshTime = useSelector(
+  const lastRefreshTime = useAppSelector(
     (state: RootState) => state.dashboardState.lastRefreshTime,
   );
-  const tabActivationTime = useSelector(
+  const tabActivationTime = useAppSelector(
     (state: RootState) => state.dashboardState.tabActivationTimes?.[props.id],
   );
-  const dashboardInfo = useSelector((state: RootState) => state.dashboardInfo);
+  const dashboardInfo = useAppSelector(
+    (state: RootState) => state.dashboardInfo,
+  );
   const isAutoRefreshing = useIsAutoRefreshing();
   const isRefreshInFlight = useIsRefreshInFlight();
 

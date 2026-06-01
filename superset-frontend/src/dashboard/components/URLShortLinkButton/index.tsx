@@ -29,10 +29,11 @@ import {
 import { CopyToClipboard } from 'src/components';
 import { getDashboardPermalink } from 'src/utils/urlUtils';
 import { useToasts } from 'src/components/MessageToasts/withToasts';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
 import { Typography } from '@superset-ui/core/components/Typography';
 import { hasStatefulCharts } from 'src/dashboard/util/chartStateConverter';
+import { useAppSelector } from '../../../views/store';
 
 export type URLShortLinkButtonProps = {
   dashboardId: number;
@@ -52,7 +53,7 @@ export default function URLShortLinkButton({
   const theme = useTheme();
   const [shortUrl, setShortUrl] = useState('');
   const { addDangerToast } = useToasts();
-  const { dataMask, activeTabs, chartStates, sliceEntities } = useSelector(
+  const { dataMask, activeTabs, chartStates, sliceEntities } = useAppSelector(
     (state: RootState) => ({
       dataMask: state.dataMask,
       activeTabs: state.dashboardState.activeTabs,

@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { Charts, Layout, RootState } from 'src/dashboard/types';
 import { DASHBOARD_ROOT_ID } from 'src/dashboard/util/constants';
@@ -27,6 +26,7 @@ import {
 } from 'src/dashboard/util/componentTypes';
 import { BuildTreeLeafTitle, TreeItem } from './types';
 import { buildTree } from './utils';
+import { useAppSelector } from '../../../../../../views/store';
 
 // eslint-disable-next-line import/prefer-default-export
 export function useFilterScopeTree(
@@ -38,13 +38,11 @@ export function useFilterScopeTree(
   treeData: [TreeItem];
   layout: Layout;
 } {
-  const layout = useSelector<RootState, Layout>(
-    ({ dashboardLayout: { present } }) => present,
-  );
+  const layout = useAppSelector(({ dashboardLayout: { present } }) => present);
 
-  const charts = useSelector<RootState, Charts>(({ charts }) => charts);
+  const charts = useAppSelector(({ charts }) => charts);
 
-  const sliceEntities = useSelector(
+  const sliceEntities = useAppSelector(
     (state: RootState) => state.sliceEntities.slices,
   );
 

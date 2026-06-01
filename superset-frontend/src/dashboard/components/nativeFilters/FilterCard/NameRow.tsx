@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { isChartCustomization, useTruncation } from '@superset-ui/core';
 import { css, SupersetTheme, useTheme } from '@apache-superset/core/theme';
 import { Icons } from '@superset-ui/core/components/Icons';
@@ -26,6 +25,7 @@ import { Row, FilterName, InternalRow } from './Styles';
 import { FilterCardRowProps } from './types';
 import { FilterConfigurationLink } from '../FilterBar/FilterConfigurationLink';
 import { TooltipWithTruncation } from './TooltipWithTruncation';
+import { useAppSelector } from '../../../../views/store';
 
 export const NameRow = ({
   filter,
@@ -33,11 +33,9 @@ export const NameRow = ({
 }: FilterCardRowProps & { hidePopover: () => void }) => {
   const theme = useTheme();
   const [filterNameRef, , elementsTruncated] = useTruncation();
-  const dashboardId = useSelector<RootState, number>(
-    ({ dashboardInfo }) => dashboardInfo.id,
-  );
+  const dashboardId = useAppSelector(({ dashboardInfo }) => dashboardInfo.id);
 
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
 

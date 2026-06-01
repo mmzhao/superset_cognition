@@ -32,8 +32,8 @@ import {
 import { useState, useEffect, useMemo } from 'react';
 import { capitalize } from 'lodash/fp';
 import { addDangerToast } from 'src/components/MessageToasts/actions';
-import { useDispatch } from 'react-redux';
 import getBootstrapData from 'src/utils/getBootstrapData';
+import { useAppDispatch } from '../../views/store';
 
 type OAuthProvider = {
   name: string;
@@ -82,7 +82,7 @@ const StyledLabel = styled(Typography.Text)`
 export default function Login() {
   const [form] = Form.useForm<LoginForm>();
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const bootstrapData = getBootstrapData();
   const nextUrl = useMemo(() => {

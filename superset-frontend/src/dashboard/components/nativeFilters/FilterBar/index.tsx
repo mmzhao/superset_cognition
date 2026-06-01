@@ -28,7 +28,6 @@ import {
   useMemo,
 } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import {
   DataMaskStateWithId,
   DataMaskWithId,
@@ -80,6 +79,7 @@ import {
   useSelectFiltersInScope,
   useChartCustomizationConfiguration,
 } from '../state';
+import { useAppDispatch, useAppSelector } from '../../../../views/store';
 
 // FilterBar is just being hidden as it must still
 // render fully due to encapsulated logics
@@ -183,7 +183,7 @@ const FilterBar: FC<FiltersBarProps> = ({
   const [pendingCustomizationDataMasks, setPendingCustomizationDataMasks] =
     useState<Record<string, DataMask>>(EMPTY_DATA_MASK_RECORD);
   const chartCustomizationValues = useChartCustomizationConfiguration();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [updateKey, setUpdateKey] = useState(0);
   const tabId = useTabId();
   const filters = useFilters();
@@ -196,17 +196,12 @@ const FilterBar: FC<FiltersBarProps> = ({
     () => filterValues.filter(isNativeFilter),
     [filterValues],
   );
-  const dashboardId = useSelector<any, number>(
-    ({ dashboardInfo }) => dashboardInfo?.id,
-  );
+  const dashboardId = useAppSelector(({ dashboardInfo }) => dashboardInfo?.id);
   const previousDashboardId = usePrevious(dashboardId);
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
-  const user: UserWithPermissionsAndRoles = useSelector<
-    RootState,
-    UserWithPermissionsAndRoles
-  >(state => state.user);
+  const user: UserWithPermissionsAndRoles = useAppSelector(state => state.user);
 
   const [filtersInScope] = useSelectFiltersInScope(nativeFilterValues);
   const inScopeFilterIds = useMemo(
@@ -411,10 +406,9 @@ const FilterBar: FC<FiltersBarProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardId, dataMaskAppliedText, history, updateKey, tabId]);
 
-  const pendingChartCustomizations = useSelector<
-    RootState,
-    Record<string, ChartCustomization> | undefined
-  >(state => state.dashboardInfo.pendingChartCustomizations);
+  const pendingChartCustomizations = useAppSelector(
+    state => state.dashboardInfo.pendingChartCustomizations,
+  );
 
   const handlePendingCustomizationDataMaskChange = useCallback(
     (customizationId: string, dataMask: DataMask) => {

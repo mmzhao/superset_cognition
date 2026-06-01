@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useEffect, useMemo, useState, ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 
 import { t } from '@apache-superset/core/translation';
 import {
@@ -32,6 +31,7 @@ import { SaveDatasetModal } from 'src/SqlLab/components/SaveDatasetModal';
 import ColumnSelectPopover from './ColumnSelectPopover';
 import { DndColumnSelectPopoverTitle } from './DndColumnSelectPopoverTitle';
 import ControlPopover from '../ControlPopover/ControlPopover';
+import { useAppSelector } from '../../../../views/store';
 
 const defaultPopoverLabel = t('My column');
 const editableTitleTab = 'sqlExpression';
@@ -210,7 +210,7 @@ const ColumnSelectPopoverTriggerInner = ({
 const ColumnSelectPopoverTriggerWrapper = (
   props: ColumnSelectPopoverTriggerProps,
 ) => {
-  const datasource = useSelector(
+  const datasource = useAppSelector(
     (state: any) => state?.explore?.datasource || null,
   );
 

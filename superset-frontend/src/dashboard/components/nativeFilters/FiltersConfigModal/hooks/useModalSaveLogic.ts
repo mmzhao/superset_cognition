@@ -26,7 +26,6 @@ import {
   ChartCustomizationDivider,
 } from '@superset-ui/core';
 import type { FormInstance } from '@superset-ui/core/components';
-import { useDispatch } from 'react-redux';
 import { updateCascadeParentIds } from 'src/dashboard/actions/nativeFilters';
 import type { FiltersConfigFormHandle } from '../FiltersConfigForm/FiltersConfigForm';
 import {
@@ -42,6 +41,7 @@ import {
   transformCustomizationForSave,
 } from '../transformers';
 import type { ItemStateManager } from './useItemStateManager';
+import { useAppDispatch } from '../../../../../views/store';
 
 const DEFAULT_EMPTY_ARRAY: string[] = [];
 
@@ -104,7 +104,7 @@ export function useModalSaveLogic({
   canBeUsedAsDependency,
   resetForm,
 }: ModalSaveLogicParams): ModalSaveLogic {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const cleanDeletedParents = useCallback(
     (values: NativeFiltersForm | null) => {

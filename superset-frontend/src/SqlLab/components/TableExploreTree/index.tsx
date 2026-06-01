@@ -25,8 +25,8 @@ import {
   type ChangeEvent,
   useMemo,
 } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { styled, css, useTheme } from '@apache-superset/core/theme';
 import { t } from '@apache-superset/core/translation';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -167,7 +167,7 @@ const TableExploreTree: React.FC<Props> = ({ queryEditorId }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const treeRef = useRef<TreeApi<TreeNodeData>>(null);
-  const tables = useSelector(
+  const tables = useAppSelector(
     ({ sqlLab }: SqlLabRootState) => sqlLab.tables,
     shallowEqual,
   );

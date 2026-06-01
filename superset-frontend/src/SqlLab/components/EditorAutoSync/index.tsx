@@ -19,8 +19,7 @@
 
 import { useRef, useEffect, FC, useMemo } from 'react';
 
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { logging } from '@apache-superset/core/utils';
 import {
   SqlLabRootState,
@@ -67,9 +66,7 @@ export function filterUnsavedQueryEditorList(
 }
 
 const EditorAutoSync: FC = () => {
-  const queryEditors = useSelector<SqlLabRootState, QueryEditor[]>(
-    state => state.sqlLab.queryEditors,
-  );
+  const queryEditors = useAppSelector(state => state.sqlLab.queryEditors);
   const queryEditorsById = useMemo(
     () =>
       queryEditors.reduce(
@@ -81,25 +78,24 @@ const EditorAutoSync: FC = () => {
       ),
     [queryEditors],
   );
-  const unsavedQueryEditor = useSelector<SqlLabRootState, UnsavedQueryEditor>(
+  const unsavedQueryEditor = useAppSelector(
     state => state.sqlLab.unsavedQueryEditor,
   );
-  const editorTabLastUpdatedAt = useSelector<SqlLabRootState, number>(
+  const editorTabLastUpdatedAt = useAppSelector(
     state => state.sqlLab.editorTabLastUpdatedAt,
   );
   const dispatch = useAppDispatch();
   const lastSavedTimestampRef = useRef<number>(editorTabLastUpdatedAt);
 
-  const currentQueryEditorId = useSelector<SqlLabRootState, string>(
+  const currentQueryEditorId = useAppSelector(
     ({ sqlLab }) => sqlLab.tabHistory.slice(-1)[0] || '',
   );
-  const lastUpdatedActiveTab = useSelector<SqlLabRootState, string>(
+  const lastUpdatedActiveTab = useAppSelector(
     ({ sqlLab }) => sqlLab.lastUpdatedActiveTab,
   );
-  const destroyedQueryEditors = useSelector<
-    SqlLabRootState,
-    Record<string, number>
-  >(({ sqlLab }) => sqlLab.destroyedQueryEditors);
+  const destroyedQueryEditors = useAppSelector(
+    ({ sqlLab }) => sqlLab.destroyedQueryEditors,
+  );
   const [updateSqlEditor, { error }] = useUpdateSqlEditorTabMutation();
   const [updateCurrentSqlEditor] = useUpdateCurrentSqlEditorTabMutation();
   const [deleteSqlEditor] = useDeleteSqlEditorTabMutation();

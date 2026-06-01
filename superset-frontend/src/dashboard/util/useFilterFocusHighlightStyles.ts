@@ -19,13 +19,13 @@
 import { useMemo } from 'react';
 import { Filter, ChartCustomization } from '@superset-ui/core';
 import { useTheme } from '@apache-superset/core/theme';
-import { useSelector } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
 import { useChartCustomizationFromRedux } from 'src/dashboard/components/nativeFilters/state';
 import {
   getRelatedCharts,
   getRelatedChartsForChartCustomization,
 } from './getRelatedCharts';
+import { useAppSelector } from '../../views/store';
 
 const unfocusedChartStyles = {
   opacity: 0.3,
@@ -47,9 +47,11 @@ const useFilterFocusHighlightStyles = (chartId: number) => {
     [theme],
   );
 
-  const nativeFilters = useSelector((state: RootState) => state.nativeFilters);
+  const nativeFilters = useAppSelector(
+    (state: RootState) => state.nativeFilters,
+  );
   const slices =
-    useSelector((state: RootState) => state.sliceEntities.slices) || {};
+    useAppSelector((state: RootState) => state.sliceEntities.slices) || {};
   const chartCustomizationItems = useChartCustomizationFromRedux();
 
   const highlightedFilterId =

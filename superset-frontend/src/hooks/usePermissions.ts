@@ -17,33 +17,33 @@
  * under the License.
  */
 import { isFeatureEnabled, FeatureFlag } from '@superset-ui/core';
-import { useSelector } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
 import { findPermission } from 'src/utils/findPermission';
+import { useAppSelector } from '../views/store';
 
 export const usePermissions = () => {
-  const canExplore = useSelector((state: RootState) =>
+  const canExplore = useAppSelector((state: RootState) =>
     findPermission('can_explore', 'Superset', state.user?.roles),
   );
-  const canWriteExploreFormData = useSelector((state: RootState) =>
+  const canWriteExploreFormData = useAppSelector((state: RootState) =>
     findPermission('can_write', 'ExploreFormDataRestApi', state.user?.roles),
   );
-  const canDatasourceSamples = useSelector((state: RootState) =>
+  const canDatasourceSamples = useAppSelector((state: RootState) =>
     findPermission('can_samples', 'Datasource', state.user?.roles),
   );
-  const canCsvLegacy = useSelector((state: RootState) =>
+  const canCsvLegacy = useAppSelector((state: RootState) =>
     findPermission('can_csv', 'Superset', state.user?.roles),
   );
-  const canExportCsvSqlLab = useSelector((state: RootState) =>
+  const canExportCsvSqlLab = useAppSelector((state: RootState) =>
     findPermission('can_export_csv', 'SQLLab', state.user?.roles),
   );
-  const canExportDataGranular = useSelector((state: RootState) =>
+  const canExportDataGranular = useAppSelector((state: RootState) =>
     findPermission('can_export_data', 'Superset', state.user?.roles),
   );
-  const canExportImageGranular = useSelector((state: RootState) =>
+  const canExportImageGranular = useAppSelector((state: RootState) =>
     findPermission('can_export_image', 'Superset', state.user?.roles),
   );
-  const canCopyClipboardGranular = useSelector((state: RootState) =>
+  const canCopyClipboardGranular = useAppSelector((state: RootState) =>
     findPermission('can_copy_clipboard', 'Superset', state.user?.roles),
   );
   const granularExport = isFeatureEnabled(FeatureFlag.GranularExportControls);
@@ -60,20 +60,20 @@ export const usePermissions = () => {
   const canCopyClipboardSqlLab = granularExport
     ? canCopyClipboardGranular
     : canExportCsvSqlLab;
-  const canDrill = useSelector((state: RootState) =>
+  const canDrill = useAppSelector((state: RootState) =>
     findPermission('can_drill', 'Dashboard', state.user?.roles),
   );
-  const canGetDrillInfo = useSelector((state: RootState) =>
+  const canGetDrillInfo = useAppSelector((state: RootState) =>
     findPermission('can_get_drill_info', 'Dataset', state.user?.roles),
   );
   const canDrillBy =
     (canExplore || canDrill) && canWriteExploreFormData && canGetDrillInfo;
   const canDrillToDetail =
     (canExplore || canDrill) && canDatasourceSamples && canGetDrillInfo;
-  const canViewQuery = useSelector((state: RootState) =>
+  const canViewQuery = useAppSelector((state: RootState) =>
     findPermission('can_view_query', 'Dashboard', state.user?.roles),
   );
-  const canViewTable = useSelector((state: RootState) =>
+  const canViewTable = useAppSelector((state: RootState) =>
     findPermission('can_view_chart_as_table', 'Dashboard', state.user?.roles),
   );
 

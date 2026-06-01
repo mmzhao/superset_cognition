@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { Currency, ensureIsArray, getCurrencySymbol } from '@superset-ui/core';
 import { css, styled, useTheme } from '@apache-superset/core/theme';
@@ -26,6 +25,7 @@ import { Select, type SelectProps } from '@superset-ui/core/components';
 import { ViewState } from 'src/views/types';
 import { ExplorePageState } from 'src/explore/types';
 import ControlHeader from '../../ControlHeader';
+import { useAppSelector } from '../../../../views/store';
 
 export interface CurrencyControlProps {
   onChange: (currency: Partial<Currency>) => void;
@@ -90,10 +90,8 @@ export const CurrencyControl = ({
 
     return {};
   }, [rawCurrency]);
-  const currencies = useSelector<ViewState, string[]>(
-    state => state.common?.currencies,
-  );
-  const currencyCodeColumn = useSelector<ExplorePageState, string | undefined>(
+  const currencies = useAppSelector(state => state.common?.currencies);
+  const currencyCodeColumn = useAppSelector(
     state => state?.explore?.datasource?.currency_code_column,
   );
 

@@ -18,7 +18,6 @@
  */
 import { Fragment, useMemo, useCallback, RefObject, createRef } from 'react';
 import { extendedDayjs } from '@superset-ui/core/utils/dates';
-import { useDispatch } from 'react-redux';
 import ReactDiffViewer from 'react-diff-viewer-continued';
 import { useInView } from 'react-intersection-observer';
 import { Button, Modal } from '@superset-ui/core/components';
@@ -30,6 +29,7 @@ import {
 import { t } from '@apache-superset/core/translation';
 import { styled } from '@apache-superset/core/theme';
 import { SAVE_TYPE_OVERWRITE_CONFIRMED } from 'src/dashboard/util/constants';
+import { useAppDispatch } from '../../../views/store';
 
 const STICKY_HEADER_TOP = 16;
 const STICKY_HEADER_HEIGHT = 32;
@@ -91,7 +91,7 @@ type Props = {
 
 const OverrideConfirmModal = ({ overwriteConfirmMetadata }: Props) => {
   const [bottomRef, hasReviewed] = useInView({ triggerOnce: true });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onHide = useCallback(
     () => dispatch(setOverrideConfirm(undefined)),
     [dispatch],

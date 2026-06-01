@@ -18,8 +18,9 @@
  */
 import { pick } from 'lodash';
 import { useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { SqlLabRootState, QueryEditor } from 'src/SqlLab/types';
+import { useAppSelector } from '../../../views/store';
 
 export const EMPTY_STATE_QE_ID = 'tmp_qe_id';
 
@@ -27,7 +28,7 @@ export default function useQueryEditor<T extends keyof QueryEditor>(
   sqlEditorId: string,
   attributes: ReadonlyArray<T>,
 ) {
-  const queryEditors = useSelector<SqlLabRootState, QueryEditor[]>(
+  const queryEditors = useAppSelector(
     ({ sqlLab: { queryEditors } }) => queryEditors,
     shallowEqual,
   );
@@ -39,7 +40,7 @@ export default function useQueryEditor<T extends keyof QueryEditor>(
     [queryEditors.map(({ id }) => id).join(',')],
   );
 
-  return useSelector<SqlLabRootState, Pick<QueryEditor, T | 'id'>>(
+  return useAppSelector(
     ({ sqlLab: { unsavedQueryEditor } }) =>
       pick(
         {

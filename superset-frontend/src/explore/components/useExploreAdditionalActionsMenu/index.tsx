@@ -25,7 +25,6 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   isFeatureEnabled,
   FeatureFlag,
@@ -72,6 +71,7 @@ import { ReportObject } from 'src/features/reports/types';
 import ViewQueryModal from '../controls/ViewQueryModal';
 import EmbedCodeContent from '../EmbedCodeContent';
 import { useDashboardsMenuItems } from './DashboardsSubMenu';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 
 export const SEARCH_THRESHOLD = 10;
 
@@ -210,27 +210,25 @@ export const useExploreAdditionalActionsMenu = (
 ): UseExploreAdditionalActionsMenuReturn => {
   const theme = useTheme();
   const { addDangerToast, addSuccessToast } = useToasts();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [dashboardSearchTerm, setDashboardSearchTerm] = useState('');
   const deferredDashboardSearchTerm = useDeferredValue(dashboardSearchTerm);
-  const chart = useSelector<ExploreState, ChartState | undefined>(state =>
+  const chart = useAppSelector(state =>
     state.explore ? state.charts?.[getChartKey(state.explore)] : undefined,
   );
-  const streamingThreshold = useSelector<ExploreState, number>(
+  const streamingThreshold = useAppSelector(
     state =>
       state.common?.conf?.CSV_STREAMING_ROW_THRESHOLD ||
       DEFAULT_CSV_STREAMING_ROW_THRESHOLD,
   );
-  const exploreChartState = useSelector<ExploreState, JsonObject | undefined>(
-    state => {
-      const chartKey = state.explore ? getChartKey(state.explore) : undefined;
-      return chartKey != null
-        ? state.explore?.chartStates?.[chartKey]
-        : undefined;
-    },
-  );
-  const canExportImage = useSelector<ExploreState, boolean>(
+  const exploreChartState = useAppSelector(state => {
+    const chartKey = state.explore ? getChartKey(state.explore) : undefined;
+    return chartKey != null
+      ? state.explore?.chartStates?.[chartKey]
+      : undefined;
+  });
+  const canExportImage = useAppSelector(
     state => state.explore?.can_export_image ?? false,
   );
 
