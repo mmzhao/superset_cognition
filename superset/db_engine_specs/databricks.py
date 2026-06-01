@@ -80,8 +80,7 @@ def monkeypatch_dialect() -> None:
     Monkeypatch dialect to correctly escape single quotes for Databricks.
 
     The Databricks SQLAlchemy dialect (<3.0) incorrectly escapes single quotes by
-    doubling them ('O''Hara') instead of using backslash escaping ('O\'Hara'). The
-    fixed version requires SQLAlchemy>=2.0, which is not yet compatible with Superset.
+    doubling them ('O''Hara') instead of using backslash escaping ('O\'Hara').
 
     Since the DatabricksDialect.colspecs points to the base class (HiveDialect.colspecs)
     we can't patch it without affecting other Hive-based dialects. The solution is to
@@ -765,5 +764,5 @@ class DatabricksPythonConnectorEngineSpec(DatabricksDynamicBaseEngineSpec):
         return uri, connect_args
 
 
-# TODO: remove once we've upgraded to SQLAlchemy>=2.0 and databricks-sql-python>=3.x
+# TODO: remove once databricks-sqlalchemy>=3.0 no longer needs this workaround
 monkeypatch_dialect()
