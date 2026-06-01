@@ -17,8 +17,8 @@
  * under the License.
  */
 import { createRef, useCallback, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { nanoid } from 'nanoid';
 import Tabs from '@superset-ui/core/components/Tabs';
 import { t } from '@apache-superset/core/translation';
@@ -108,7 +108,7 @@ const SouthPane = ({
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const viewItems = views.getViews(ViewLocations.sqllab.panels) || [];
-  const { offline, tables } = useSelector(
+  const { offline, tables } = useAppSelector(
     ({ sqlLab: { offline, tables } }: SqlLabRootState) => ({
       offline,
       tables,
@@ -116,9 +116,8 @@ const SouthPane = ({
     shallowEqual,
   );
   const activeSouthPaneTab =
-    useSelector<SqlLabRootState, string>(
-      state => state.sqlLab.activeSouthPaneTab as string,
-    ) ?? 'Results';
+    useAppSelector(state => state.sqlLab.activeSouthPaneTab as string) ??
+    'Results';
 
   const pinnedTables = useMemo(
     () => tables.filter(({ queryEditorId: qeId }) => String(editorId) === qeId),

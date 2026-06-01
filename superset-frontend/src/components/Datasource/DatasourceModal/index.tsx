@@ -17,7 +17,6 @@
  * under the License.
  */
 import { FunctionComponent, useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import {
   SupersetClient,
@@ -40,6 +39,7 @@ import withToasts from 'src/components/MessageToasts/withToasts';
 import { ErrorMessageWithStackTrace } from 'src/components';
 import type { DatasetObject } from 'src/features/datasets/types';
 import type { DatasourceModalProps } from '../types';
+import { useAppSelector } from '../../../views/store';
 
 const DatasourceEditor = AsyncEsmComponent(
   () => import('../components/DatasourceEditor'),
@@ -97,14 +97,7 @@ const DatasourceModal: FunctionComponent<DatasourceModalProps> = ({
   const theme = useTheme();
   const [currentDatasource, setCurrentDatasource] = useState(datasource);
   const [syncColumns, setSyncColumns] = useState(false);
-  const currencies = useSelector<
-    {
-      common: {
-        currencies: string[];
-      };
-    },
-    string[]
-  >(state => state.common?.currencies);
+  const currencies = useAppSelector(state => state.common?.currencies);
   const [errors, setErrors] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);

@@ -27,7 +27,6 @@ import {
   useState,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import {
   Behavior,
@@ -55,6 +54,7 @@ import { getMenuAdjustedY } from '../utils';
 import { DrillBySubmenu } from '../DrillBy/DrillBySubmenu';
 import DrillDetailModal from '../DrillDetail/DrillDetailModal';
 import { MenuItemTooltip } from '../DisabledMenuItemTooltip';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 
 export enum ContextMenuItem {
   CrossFilter,
@@ -94,16 +94,14 @@ const ChartContextMenu = (
   }: ChartContextMenuProps,
   ref: RefObject<ChartContextMenuRef>,
 ) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const theme = useTheme();
   const { canDrillToDetail, canDrillBy, canDownload } = usePermissions();
 
-  const crossFiltersEnabled = useSelector<RootState, boolean>(
+  const crossFiltersEnabled = useAppSelector(
     ({ dashboardInfo }) => dashboardInfo.crossFiltersEnabled,
   );
-  const dashboardId = useSelector<RootState, number>(
-    ({ dashboardInfo }) => dashboardInfo.id,
-  );
+  const dashboardId = useAppSelector(({ dashboardInfo }) => dashboardInfo.id);
 
   const [modalFilters, setFilters] = useState<BinaryQueryObjectFilterClause[]>(
     [],

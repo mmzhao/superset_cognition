@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 
 import { t } from '@apache-superset/core/translation';
 import { COMMON_ERR_MESSAGES, ClientErrorObject } from '@superset-ui/core';
@@ -28,13 +27,14 @@ import {
   ValidationResult,
 } from 'src/hooks/apiResources';
 import { useDebounceValue } from 'src/hooks/useDebounceValue';
+import { useAppSelector } from '../../../views/store';
 
 const EMPTY = [] as ValidationResult[];
 
 export function useAnnotations(params: FetchValidationQueryParams) {
   const { sql, dbId, schema, templateParams } = params;
   const debouncedSql = useDebounceValue(sql, VALIDATION_DEBOUNCE_MS);
-  const hasValidator = useSelector<SqlLabRootState>(({ sqlLab, common }) =>
+  const hasValidator = useAppSelector(({ sqlLab, common }) =>
     // Check whether or not we can validate the current query based on whether
     // or not the backend has a validator configured for it.
     Boolean(

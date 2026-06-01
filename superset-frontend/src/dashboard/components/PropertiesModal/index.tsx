@@ -48,7 +48,6 @@ import {
   getColorNamespace,
   getFreshLabelsColorMapEntries,
 } from 'src/utils/colorScheme';
-import { useDispatch } from 'react-redux';
 import {
   setColorScheme,
   setDashboardMetadata,
@@ -65,6 +64,7 @@ import {
   CertificationSection,
   AdvancedSection,
 } from './sections';
+import { useAppDispatch } from '../../../views/store';
 
 type PropertiesModalProps = {
   dashboardId: number;
@@ -114,7 +114,7 @@ const PropertiesModal = ({
   onSubmit = () => {},
   show = false,
 }: PropertiesModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
   const [isLoading, setIsLoading] = useState(true);

@@ -16,17 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { AsyncEsmComponent } from '@superset-ui/core/components';
 import { DashboardState, RootState } from 'src/dashboard/types';
+import { useAppSelector } from '../../../views/store';
 
 const Modal = AsyncEsmComponent(() => import('./OverwriteConfirmModal'));
 
 const OverrideConfirm = () => {
-  const overwriteConfirmMetadata = useSelector<
-    RootState,
-    DashboardState['overwriteConfirmMetadata']
-  >(({ dashboardState }) => dashboardState.overwriteConfirmMetadata);
+  const overwriteConfirmMetadata = useAppSelector(
+    ({ dashboardState }) => dashboardState.overwriteConfirmMetadata,
+  );
 
   return (
     <>

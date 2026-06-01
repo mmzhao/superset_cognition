@@ -21,7 +21,6 @@ import { Global } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
 import { t } from '@apache-superset/core/translation';
 import { useTheme } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { useToasts } from 'src/components/MessageToasts/withToasts';
 import { Loading } from '@superset-ui/core/components';
@@ -74,6 +73,7 @@ import {
   updateUrlWithUnmatchedFilters,
   RISON_UNMATCHED_DATAMASK_ID,
 } from '../util/risonFilters';
+import { useAppDispatch, useAppSelector } from '../../views/store';
 
 type NativeFilterConfigEntry = Partial<Filter> & { id: string };
 
@@ -125,14 +125,14 @@ const selectActiveFilters = createSelector(
 
 export const DashboardPage: FC<PageProps> = ({ idOrSlug }: PageProps) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const dashboardPageId = useMemo(() => nanoid(), []);
-  const hasDashboardInfoInitiated = useSelector<RootState, boolean>(
+  const hasDashboardInfoInitiated = useAppSelector(
     ({ dashboardInfo }) =>
       dashboardInfo && Object.keys(dashboardInfo).length > 0,
   );
-  const reduxTheme = useSelector(
+  const reduxTheme = useAppSelector(
     (state: RootState) => state.dashboardInfo.theme,
   );
   const { addDangerToast } = useToasts();
@@ -153,7 +153,7 @@ export const DashboardPage: FC<PageProps> = ({ idOrSlug }: PageProps) => {
 
   // Get CSS from dashboardInfo (unified properties location)
   const css =
-    useSelector((state: RootState) => state.dashboardInfo.css) ||
+    useAppSelector((state: RootState) => state.dashboardInfo.css) ||
     dashboard?.css;
 
   useEffect(() => {
@@ -337,8 +337,8 @@ export const DashboardPage: FC<PageProps> = ({ idOrSlug }: PageProps) => {
     }
   }, [addDangerToast, datasets, datasetsApiError, dispatch]);
 
-  const relevantDataMask = useSelector(selectRelevantDatamask);
-  const activeFilters = useSelector(selectActiveFilters);
+  const relevantDataMask = useAppSelector(selectRelevantDatamask);
+  const activeFilters = useAppSelector(selectActiveFilters);
 
   if (error) throw error; // caught in error boundary
 

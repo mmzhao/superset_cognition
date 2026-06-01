@@ -18,7 +18,6 @@
  */
 import { ReactElement, useCallback, memo, useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useSelector, useDispatch } from 'react-redux';
 import { logEvent } from 'src/logger/actions';
 import { addDangerToast } from 'src/components/MessageToasts/actions';
 import { componentLookup } from 'src/dashboard/components/gridComponents';
@@ -38,6 +37,7 @@ import {
 } from 'src/dashboard/actions/dashboardState';
 import type { DropResult } from 'src/dashboard/components/dnd/dragDroppableConfig';
 import type { RootState, LayoutItem } from 'src/dashboard/types';
+import { useAppDispatch, useAppSelector } from '../../views/store';
 
 interface DashboardComponentProps {
   id: string;
@@ -91,15 +91,17 @@ interface ColumnWidthResult {
 const DashboardComponent = (
   props: DashboardComponentProps,
 ): ReactElement | null => {
-  const dispatch = useDispatch();
-  const dashboardLayout = useSelector(
+  const dispatch = useAppDispatch();
+  const dashboardLayout = useAppSelector(
     (state: RootState) => state.dashboardLayout.present,
   );
-  const dashboardInfo = useSelector((state: RootState) => state.dashboardInfo);
-  const editMode = useSelector(
+  const dashboardInfo = useAppSelector(
+    (state: RootState) => state.dashboardInfo,
+  );
+  const editMode = useAppSelector(
     (state: RootState) => state.dashboardState.editMode,
   );
-  const fullSizeChartId = useSelector(
+  const fullSizeChartId = useAppSelector(
     (state: RootState) => state.dashboardState.fullSizeChartId,
   );
   const dashboardId = dashboardInfo.id;

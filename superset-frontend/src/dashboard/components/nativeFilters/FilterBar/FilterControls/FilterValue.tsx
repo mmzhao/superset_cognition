@@ -42,7 +42,6 @@ import {
   isChartCustomization,
 } from '@superset-ui/core';
 import { styled } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import { isEqual, isEqualWith } from 'lodash';
 import { getChartDataRequest } from 'src/components/Chart/chartAction';
 import { ErrorAlert, ErrorMessageWithStackTrace } from 'src/components';
@@ -63,6 +62,7 @@ import { FilterControlProps } from './types';
 import { getFormData } from '../../utils';
 import { useFilterDependencies, useTransitiveParentIds } from './state';
 import { useFilterOutlined } from '../useFilterOutlined';
+import { useAppDispatch, useAppSelector } from '../../../../../views/store';
 
 const HEIGHT = 32;
 
@@ -114,10 +114,10 @@ export const applyTimeGrainAllowlist = (
 };
 
 const useShouldFilterRefresh = () => {
-  const isDashboardRefreshing = useSelector<RootState, boolean>(
+  const isDashboardRefreshing = useAppSelector(
     state => state.dashboardState.isRefreshing,
   );
-  const isFilterRefreshing = useSelector<RootState, boolean>(
+  const isFilterRefreshing = useAppSelector(
     state => state.dashboardState.isFiltersRefreshing,
   );
 
@@ -163,9 +163,7 @@ const FilterValue: FC<FilterValueProps> = ({
   const [state, setState] = useState<ChartDataResponseResult[]>([]);
   const hasDeps = Boolean(filter.cascadeParentIds?.length);
   const [hasDepsFilterValue, setHasDepsFilterValue] = useState(hasDeps);
-  const dashboardId = useSelector<RootState, number>(
-    state => state.dashboardInfo.id,
-  );
+  const dashboardId = useAppSelector(state => state.dashboardInfo.id);
 
   const [error, setError] = useState<ClientErrorObject>();
   const [formData, setFormData] = useState<Partial<QueryFormData>>({
@@ -183,7 +181,7 @@ const FilterValue: FC<FilterValueProps> = ({
   const hasDataSource = !!datasetId;
   const [isLoading, setIsLoading] = useState<boolean>(hasDataSource);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { outlinedFilterId, lastUpdated } = useFilterOutlined();
 

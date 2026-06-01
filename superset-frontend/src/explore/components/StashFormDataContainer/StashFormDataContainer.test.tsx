@@ -18,12 +18,12 @@
  */
 import { defaultState } from 'src/explore/store';
 import { render, waitFor } from 'spec/helpers/testing-library';
-import { useSelector } from 'react-redux';
 import { ExplorePageState } from 'src/explore/types';
 import StashFormDataContainer from '.';
+import { useAppSelector } from '../../../views/store';
 
 const FormDataMock = () => {
-  const formData = useSelector(
+  const formData = useAppSelector(
     (state: ExplorePageState) => state.explore.form_data,
   );
 

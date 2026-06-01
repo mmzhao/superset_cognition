@@ -30,8 +30,9 @@ import { getDashboardPermalink } from 'src/utils/urlUtils';
 import EmbedCodeContent from 'src/explore/components/EmbedCodeContent';
 import { ModalTrigger } from '@superset-ui/core/components';
 import { MenuKeys, RootState } from 'src/dashboard/types';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { hasStatefulCharts } from 'src/dashboard/util/chartStateConverter';
+import { useAppSelector } from '../../../../views/store';
 
 export interface ShareMenuItemProps extends ComponentProps<
   typeof Menu.SubMenu
@@ -77,7 +78,7 @@ export const useShareMenuItems = (props: ShareMenuItemProps): MenuItem => {
   );
   const isEmbedCodeEnabled = isFeatureEnabled(FeatureFlag.EmbeddableCharts);
 
-  const { dataMask, activeTabs, chartStates, sliceEntities } = useSelector(
+  const { dataMask, activeTabs, chartStates, sliceEntities } = useAppSelector(
     (state: RootState) => ({
       dataMask: state.dataMask,
       activeTabs: state.dashboardState.activeTabs,

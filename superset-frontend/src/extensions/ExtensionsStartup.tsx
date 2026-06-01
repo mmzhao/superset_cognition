@@ -30,8 +30,7 @@ import {
   sqlLab,
   views,
 } from 'src/core';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/views/store';
+import { useAppSelector } from '../views/store';
 import ExtensionsLoader from './ExtensionsLoader';
 
 declare global {
@@ -54,9 +53,7 @@ const ExtensionsStartup: React.FC<{ children?: React.ReactNode }> = ({
 }) => {
   const [initialized, setInitialized] = useState(false);
 
-  const userId = useSelector<RootState, number | undefined>(
-    ({ user }) => user.userId,
-  );
+  const userId = useAppSelector(({ user }) => user.userId);
 
   useEffect(() => {
     if (initialized) return;

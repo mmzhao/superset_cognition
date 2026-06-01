@@ -19,7 +19,7 @@
 
 import { ComponentType, useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import {
   addDangerToast,
@@ -27,6 +27,7 @@ import {
   addSuccessToast,
   addWarningToast,
 } from './actions';
+import { useAppDispatch } from '../../views/store';
 
 export interface ToastProps {
   addDangerToast: typeof addDangerToast;
@@ -53,6 +54,6 @@ export default function withToasts(BaseComponent: ComponentType<any>) {
 }
 
 export function useToasts() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return useMemo(() => bindActionCreators(toasters, dispatch), [dispatch]);
 }

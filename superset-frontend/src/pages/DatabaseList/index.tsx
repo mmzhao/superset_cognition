@@ -27,7 +27,6 @@ import { css, styled, useTheme } from '@apache-superset/core/theme';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { CellProps } from 'react-table';
 import rison from 'rison';
-import { useSelector } from 'react-redux';
 import { useQueryParams, BooleanParam } from 'use-query-params';
 import { LocalStorageKeys, setItem } from 'src/utils/localStorageHelpers';
 import { useListViewResource } from 'src/views/CRUD/hooks';
@@ -75,6 +74,7 @@ import {
   databaseLabelLower,
   databasesLabel,
 } from 'src/features/semanticLayers/label';
+import { useAppSelector } from '../../views/store';
 
 const extensionsRegistry = getExtensionsRegistry();
 const DatabaseDeleteRelatedExtension = extensionsRegistry.get(
@@ -232,10 +232,8 @@ function DatabaseList({
   const fetchData = showSemanticLayers ? combinedFetchData : dbFetchData;
   const refreshData = showSemanticLayers ? combinedRefreshData : dbRefreshData;
 
-  const fullUser = useSelector<any, UserWithPermissionsAndRoles>(
-    state => state.user,
-  );
-  const shouldSyncPermsInAsyncMode = useSelector<any, boolean>(
+  const fullUser = useAppSelector(state => state.user);
+  const shouldSyncPermsInAsyncMode = useAppSelector(
     state => state.common?.conf.SYNC_DB_PERMISSIONS_IN_ASYNC_MODE,
   );
   const showDatabaseModal = getUrlParam(URL_PARAMS.showDatabaseModal);
@@ -277,7 +275,7 @@ function DatabaseList({
     COLUMNAR_EXTENSIONS,
     EXCEL_EXTENSIONS,
     ALLOWED_EXTENSIONS,
-  } = useSelector<any, ExtensionConfigs>(state => state.common.conf);
+  } = useAppSelector(state => state.common.conf);
 
   useEffect(() => {
     if (query?.databaseAdded) {

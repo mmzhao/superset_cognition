@@ -25,12 +25,12 @@ import {
   Tooltip,
   type FormItemProps,
 } from '@superset-ui/core/components';
-import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { PluginDeckglLayerVisibilityProps } from './types';
 import { useDeckLayerMetadata } from './useDeckLayerMetadata';
 import { FilterPluginStyle, StatusMessage } from '../common';
 import { Slice } from 'src/dashboard/types';
+import { useAppSelector } from '../../../views/store';
 
 type SliceEntitiesState = {
   sliceEntities?: {
@@ -75,8 +75,8 @@ export default function DeckglLayerVisibilityCustomizationPlugin(
   );
   const hasInitialized = useRef(false);
 
-  const allLayerIds = useSelector(selectAllLayerIds);
-  const dataMask = useSelector(
+  const allLayerIds = useAppSelector(selectAllLayerIds);
+  const dataMask = useAppSelector(
     (state: { dataMask?: DataMaskState }) =>
       state.dataMask || (EMPTY_OBJECT as DataMaskState),
   );

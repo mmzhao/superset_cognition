@@ -95,7 +95,6 @@ import {
   DashboardTabsResponse,
 } from 'src/features/alerts/types';
 import { StatusMessage } from 'src/filters/components/common';
-import { useSelector } from 'react-redux';
 import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 import { getChartDataRequest } from 'src/components/Chart/chartAction';
 import DateFilterControl from 'src/explore/components/controls/DateFilterControl';
@@ -105,6 +104,7 @@ import NumberInput from './components/NumberInput';
 import { AlertReportCronScheduler } from './components/AlertReportCronScheduler';
 import { NotificationMethod } from './components/NotificationMethod';
 import { buildErrorTooltipMessage } from './buildErrorTooltipMessage';
+import { useAppSelector } from '../../views/store';
 
 const TIMEOUT_MIN = 1;
 const COLLAPSE_ANIMATION_DURATION = 220;
@@ -488,9 +488,7 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
     'filter.dateFilterControl',
   );
   const DateFilterComponent = DateFilterControlExtension ?? DateFilterControl;
-  const currentUser = useSelector<any, UserWithPermissionsAndRoles>(
-    state => state.user,
-  );
+  const currentUser = useAppSelector(state => state.user);
   // Check config for alternate notification methods setting
   const conf = useCommonConf();
   const allowedNotificationMethods: NotificationMethodOption[] =
@@ -654,7 +652,7 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
     ALERT_REPORTS_DEFAULT_WORKING_TIMEOUT,
     ALERT_REPORTS_DEFAULT_CRON_VALUE,
     ALERT_REPORTS_DEFAULT_RETENTION,
-  } = useSelector<any, AlertsReportsConfig>(state => {
+  } = useAppSelector(state => {
     const conf = state.common?.conf;
     return {
       ALERT_REPORTS_DEFAULT_WORKING_TIMEOUT:

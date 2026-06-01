@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import { useCallback, useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import {
@@ -36,6 +35,7 @@ import {
   migrateChartCustomizationArray,
   isLegacyChartCustomizationFormat,
 } from '../../util/migrateChartCustomization';
+import { useAppSelector } from '../../../views/store';
 
 const EMPTY_ARRAY: ChartCustomizationConfiguration = [];
 const defaultFilterConfiguration: (Filter | Divider)[] = [];
@@ -64,7 +64,7 @@ export const selectFilterConfiguration: (
 );
 
 export function useFilterConfiguration() {
-  return useSelector(selectFilterConfiguration);
+  return useAppSelector(selectFilterConfiguration);
 }
 
 export const selectChartCustomizationFromRedux: (
@@ -81,7 +81,7 @@ export const selectChartCustomizationFromRedux: (
 );
 
 export function useChartCustomizationFromRedux() {
-  return useSelector(selectChartCustomizationFromRedux);
+  return useAppSelector(selectChartCustomizationFromRedux);
 }
 
 const selectDashboardChartIds = createSelector(
@@ -127,7 +127,7 @@ const selectChartCustomizationConfiguration = createSelector(
 );
 
 export function useChartCustomizationConfiguration() {
-  return useSelector(selectChartCustomizationConfiguration);
+  return useAppSelector(selectChartCustomizationConfiguration);
 }
 
 export function useFilterConfigMap() {
@@ -166,9 +166,7 @@ export function useChartCustomizationConfigMap() {
 }
 
 export function useDashboardLayout() {
-  return useSelector<RootState, DashboardLayout>(
-    state => state.dashboardLayout?.present,
-  );
+  return useAppSelector(state => state.dashboardLayout?.present);
 }
 
 export function useDashboardHasTabs() {
@@ -181,9 +179,7 @@ export function useDashboardHasTabs() {
 }
 
 function useActiveDashboardTabs() {
-  return useSelector<RootState, ActiveTabs>(
-    state => state.dashboardState?.activeTabs,
-  );
+  return useAppSelector(state => state.dashboardState?.activeTabs);
 }
 
 function useSelectChartTabParents() {

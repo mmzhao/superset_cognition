@@ -17,8 +17,8 @@
  * under the License.
  */
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { usePrevious } from '@superset-ui/core';
 import { css, useTheme } from '@apache-superset/core/theme';
 import { Global } from '@emotion/react';
@@ -149,13 +149,10 @@ const EditorWrapper = ({
   ]);
   // Prevent a maximum update depth exceeded error
   // by skipping access the unsaved query editor state
-  const cursorPosition = useSelector<SqlLabRootState, CursorPosition>(
-    ({ sqlLab: { queryEditors } }) => {
-      const editor = queryEditors.find(({ id }) => id === queryEditorId);
-      return editor?.cursorPosition ?? { row: 0, column: 0 };
-    },
-    shallowEqual,
-  );
+  const cursorPosition = useAppSelector(({ sqlLab: { queryEditors } }) => {
+    const editor = queryEditors.find(({ id }) => id === queryEditorId);
+    return editor?.cursorPosition ?? { row: 0, column: 0 };
+  }, shallowEqual);
 
   const currentSql = queryEditor.sql ?? '';
   const [sql, setSql] = useState(currentSql);

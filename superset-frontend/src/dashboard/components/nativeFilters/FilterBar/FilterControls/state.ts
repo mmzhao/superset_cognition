@@ -17,7 +17,7 @@
  * under the License.
  */
 import { useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { DataMaskStateWithId, ExtraFormData } from '@superset-ui/core';
 import { RootState } from 'src/dashboard/types';
 import { mergeExtraFormData } from '../../utils';
@@ -25,6 +25,7 @@ import {
   FilterConfigMap,
   resolveTransitiveParentIds,
 } from '../../dependencyGraph';
+import { useAppSelector } from '../../../../../views/store';
 
 /**
  * Resolve the transitive ancestor ids for a given filter from the live
@@ -33,7 +34,7 @@ import {
  * always agree on which parents count.
  */
 export function useTransitiveParentIds(id: string): string[] {
-  const filterConfig = useSelector<RootState, FilterConfigMap | undefined>(
+  const filterConfig = useAppSelector(
     state => state.nativeFilters?.filters,
     shallowEqual,
   );

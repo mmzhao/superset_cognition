@@ -17,7 +17,7 @@
  * under the License.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import { omit } from 'lodash';
 import { EmptyState, Skeleton } from '@superset-ui/core/components';
@@ -31,6 +31,7 @@ import useEffectEvent from 'src/hooks/useEffectEvent';
 import useQueryEditor from 'src/SqlLab/hooks/useQueryEditor';
 import PanelToolbar from 'src/components/PanelToolbar';
 import { ViewLocations } from 'src/SqlLab/contributions';
+import { useAppSelector } from '../../../views/store';
 
 interface QueryHistoryProps {
   queryEditorId: string | number;
@@ -68,7 +69,7 @@ const QueryHistory = ({
   const editorId = tabViewId ?? id;
   const [ref, hasReachedBottom] = useInView({ threshold: 0 });
   const [pageIndex, setPageIndex] = useState(0);
-  const queries = useSelector(
+  const queries = useAppSelector(
     ({ sqlLab: { queries } }: SqlLabRootState) => queries,
     shallowEqual,
   );

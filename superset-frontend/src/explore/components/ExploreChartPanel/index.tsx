@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Split from 'react-split';
 import { t } from '@apache-superset/core/translation';
 import {
@@ -56,6 +55,7 @@ import { DataTablesPane } from '../DataTablesPane';
 import { ChartPills } from '../ChartPills';
 import { ExploreAlert } from '../ExploreAlert';
 import useResizeDetectorByObserver from './useResizeDetectorByObserver';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 
 const extensionsRegistry = getExtensionsRegistry();
 const DefaultHeader: React.FC<{ children?: React.ReactNode }> = ({
@@ -176,11 +176,11 @@ const ExploreChartPanel = ({
   can_download: canDownload,
 }: ExploreChartPanelProps) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const gutterMargin = theme.sizeUnit * GUTTER_SIZE_FACTOR;
   const gutterHeight = theme.sizeUnit * GUTTER_SIZE_FACTOR;
 
-  const chartState = useSelector(
+  const chartState = useAppSelector(
     (state: { explore?: ExploreState }) =>
       state.explore?.chartStates?.[chart.id],
   );

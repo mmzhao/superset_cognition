@@ -30,8 +30,8 @@ import {
 
 import type { editors } from '@apache-superset/core';
 import useEffectEvent from 'src/hooks/useEffectEvent';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { t } from '@apache-superset/core/translation';
 import {
@@ -241,33 +241,27 @@ const SqlEditor: FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const { database, latestQuery, currentQueryEditorId, hasSqlStatement } =
-    useSelector<
-      SqlLabRootState,
-      {
-        database?: DatabaseObject;
-        latestQuery?: QueryResponse;
-        hideLeftBar?: boolean;
-        currentQueryEditorId: QueryEditor['id'];
-        hasSqlStatement: boolean;
-      }
-    >(({ sqlLab: { unsavedQueryEditor, databases, queries, tabHistory } }) => {
-      let { dbId, latestQueryId, hideLeftBar } = queryEditor;
-      if (unsavedQueryEditor?.id === queryEditor.id) {
-        dbId = unsavedQueryEditor.dbId || dbId;
-        latestQueryId = unsavedQueryEditor.latestQueryId || latestQueryId;
-        hideLeftBar =
-          typeof unsavedQueryEditor.hideLeftBar === 'boolean'
-            ? unsavedQueryEditor.hideLeftBar
-            : hideLeftBar;
-      }
-      return {
-        hasSqlStatement: Boolean(queryEditor.sql?.trim().length > 0),
-        database: databases[dbId || ''],
-        latestQuery: queries[latestQueryId || ''],
-        hideLeftBar,
-        currentQueryEditorId: tabHistory.slice(-1)[0],
-      };
-    }, shallowEqual);
+    useAppSelector(
+      ({ sqlLab: { unsavedQueryEditor, databases, queries, tabHistory } }) => {
+        let { dbId, latestQueryId, hideLeftBar } = queryEditor;
+        if (unsavedQueryEditor?.id === queryEditor.id) {
+          dbId = unsavedQueryEditor.dbId || dbId;
+          latestQueryId = unsavedQueryEditor.latestQueryId || latestQueryId;
+          hideLeftBar =
+            typeof unsavedQueryEditor.hideLeftBar === 'boolean'
+              ? unsavedQueryEditor.hideLeftBar
+              : hideLeftBar;
+        }
+        return {
+          hasSqlStatement: Boolean(queryEditor.sql?.trim().length > 0),
+          database: databases[dbId || ''],
+          latestQuery: queries[latestQueryId || ''],
+          hideLeftBar,
+          currentQueryEditorId: tabHistory.slice(-1)[0],
+        };
+      },
+      shallowEqual,
+    );
 
   const logAction = useLogAction({ queryEditorId: queryEditor.id });
   const isActive = currentQueryEditorId === queryEditor.id;

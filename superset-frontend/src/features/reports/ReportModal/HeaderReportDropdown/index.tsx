@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import {
   FeatureFlag,
@@ -37,6 +36,7 @@ import {
 } from 'src/features/reports/ReportModal/actions';
 import { ReportObject } from 'src/features/reports/types';
 import { MenuItemWithCheckboxContainer } from 'src/explore/components/useExploreAdditionalActionsMenu/index';
+import { useAppDispatch, useAppSelector } from '../../../../views/store';
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -72,14 +72,14 @@ export const useHeaderReportMenuItems = ({
   showReportModal,
   setCurrentReportDeleting,
 }: HeaderReportProps): MenuItem | null => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const resourceId = dashboardId || chart?.id;
   const resourceType = dashboardId
     ? CreationMethod.Dashboards
     : CreationMethod.Charts;
 
   // Select the reports state and specific report with proper reactivity
-  const report = useSelector<any, ReportObject | null>(state => {
+  const report = useAppSelector(state => {
     if (!resourceId) return null;
     // Select directly from the reports state to ensure reactivity
     const reportsState = state.reports || {};
@@ -88,10 +88,7 @@ export const useHeaderReportMenuItems = ({
     return reportData || null;
   });
 
-  const user: UserWithPermissionsAndRoles = useSelector<
-    any,
-    UserWithPermissionsAndRoles
-  >(state => state.user);
+  const user: UserWithPermissionsAndRoles = useAppSelector(state => state.user);
 
   const prevDashboard = usePrevious(dashboardId);
 

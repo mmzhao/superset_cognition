@@ -18,7 +18,6 @@
  */
 /* eslint-disable camelcase */
 import { PureComponent, createRef } from 'react';
-import { useSelector } from 'react-redux';
 import { isDefined, ensureIsArray, DatasourceType } from '@superset-ui/core';
 import { t } from '@apache-superset/core/translation';
 import type { editors } from '@apache-superset/core';
@@ -50,6 +49,7 @@ import {
 import { getColumnKeywords } from 'src/explore/controlUtils/getColumnKeywords';
 import SQLEditorWithValidation from 'src/components/SQLEditorWithValidation';
 import type { RefObject } from 'react';
+import { useAppSelector } from '../../../../../views/store';
 
 interface ColumnType {
   column_name: string;
@@ -614,7 +614,7 @@ AdhocMetricEditPopover.defaultProps = defaultProps;
 // AdhocMetricEditPopover is a class component and cannot use hooks directly.
 // ---------------------------------------------------------------------------
 function AdhocMetricEditPopoverWithRedux(props: AdhocMetricEditPopoverProps) {
-  const compatibleMetrics = useSelector(
+  const compatibleMetrics = useAppSelector(
     (state: any) =>
       state.explore?.compatibleMetrics as string[] | null | undefined,
   );

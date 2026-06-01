@@ -29,7 +29,6 @@ import { t } from '@apache-superset/core/translation';
 import { getClientErrorObject, VizType } from '@superset-ui/core';
 import { Alert } from '@apache-superset/core/components';
 import { SupersetTheme } from '@apache-superset/core/theme';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   editReport,
   subscribeReport,
@@ -69,6 +68,7 @@ import {
   SectionHeaderStyle,
   StyledMessageContentTitle,
 } from './styles';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 
 interface ReportProps {
   onHide: () => {};
@@ -157,9 +157,9 @@ function ReportModal({
   );
   const [cronError, setCronError] = useState<CronError>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // Report fetch logic
-  const report = useSelector<any, ReportObject>(state => {
+  const report = useAppSelector(state => {
     const resourceType = dashboardId
       ? CreationMethod.Dashboards
       : CreationMethod.Charts;

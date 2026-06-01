@@ -18,7 +18,6 @@
  */
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Menu, MenuItem } from '@superset-ui/core/components/Menu';
 import { t } from '@apache-superset/core/translation';
@@ -37,6 +36,7 @@ import { getUrlParam } from 'src/utils/urlUtils';
 import { MenuKeys, RootState } from 'src/dashboard/types';
 import { HeaderDropdownProps } from 'src/dashboard/components/Header/types';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useAppSelector } from '../../../views/store';
 
 export const useHeaderActionsMenu = ({
   customCss,
@@ -76,7 +76,7 @@ export const useHeaderActionsMenu = ({
   const { canExportImage } = usePermissions();
   const history = useHistory();
   const location = useLocation();
-  const directPathToChild = useSelector(
+  const directPathToChild = useAppSelector(
     (state: RootState) => state.dashboardState.directPathToChild,
   );
 

@@ -24,7 +24,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import rison from 'rison';
 import { t } from '@apache-superset/core/translation';
 import { SupersetClient } from '@superset-ui/core';
@@ -47,6 +46,7 @@ import CodeSyntaxHighlighter, {
 } from '@superset-ui/core/components/CodeSyntaxHighlighter';
 import { useHistory } from 'react-router-dom';
 import { ExplorePageState } from 'src/explore/types';
+import { useAppSelector } from '../../../views/store';
 
 export interface ViewQueryProps {
   sql: string;
@@ -81,14 +81,14 @@ const ViewQuery: FC<ViewQueryProps> = props => {
   const { sql, language = 'sql', datasource } = props;
   const theme = useTheme();
   const datasetId = datasource?.split('__')[0];
-  const exploreBackend = useSelector(
+  const exploreBackend = useAppSelector(
     (state: ExplorePageState) => state.explore?.datasource?.database?.backend,
   );
   const [formattedSQL, setFormattedSQL] = useState<string>();
   const [showFormatSQL, setShowFormatSQL] = useState(true);
   const history = useHistory();
   const currentSQL = (showFormatSQL ? formattedSQL : sql) ?? sql;
-  const canAccessSQLLab = useSelector((state: RootState) =>
+  const canAccessSQLLab = useAppSelector((state: RootState) =>
     findPermission('menu_access', 'SQL Lab', state.user?.roles),
   );
 

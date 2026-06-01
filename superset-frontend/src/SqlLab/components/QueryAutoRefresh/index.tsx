@@ -17,8 +17,7 @@
  * under the License.
  */
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from '../../../views/store';
 import { isObject } from 'lodash';
 import rison from 'rison';
 import {
@@ -73,9 +72,10 @@ function QueryAutoRefresh({
   const pendingRequestRef = useRef(false);
   const cleanInactiveRequestRef = useRef(false);
   const failedQueries = useRef(lruCache(1000));
-  const databases = useSelector<SqlLabRootState>(
-    ({ sqlLab }) => sqlLab.databases,
-  ) as Record<string, DatabaseObject>;
+  const databases = useAppSelector(({ sqlLab }) => sqlLab.databases) as Record<
+    string,
+    DatabaseObject
+  >;
   const asyncFetchDbs = useRef(
     new Set(
       Object.values(databases)

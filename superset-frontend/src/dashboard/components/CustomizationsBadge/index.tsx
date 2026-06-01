@@ -17,7 +17,6 @@
  * under the License.
  */
 import { memo, useMemo, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { t } from '@apache-superset/core/translation';
 import { ChartCustomization, DataMaskStateWithId } from '@superset-ui/core';
@@ -28,6 +27,7 @@ import { extractLabel } from '../nativeFilters/selectors';
 import { useChartCustomizationFromRedux } from '../nativeFilters/state';
 import { RootState } from '../../types';
 import { isChartWithoutGroupBy } from '../../util/charts/chartTypeLimitations';
+import { useAppSelector } from '../../../views/store';
 
 const getCustomizationDataset = (
   item: ChartCustomization | any,
@@ -171,9 +171,7 @@ export const CustomizationsBadge = ({ chartId }: CustomizationsBadgeProps) => {
 
   const chartCustomizationItems = useChartCustomizationFromRedux();
 
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
-    state => state.dataMask,
-  );
+  const dataMask = useAppSelector(state => state.dataMask);
 
   // Use memoized selectors for chart data
   const selectChartDataset = useMemo(
@@ -185,8 +183,8 @@ export const CustomizationsBadge = ({ chartId }: CustomizationsBadgeProps) => {
     [chartId],
   );
 
-  const chartDataset = useSelector(selectChartDataset);
-  const chartFormData = useSelector(selectChartFormData);
+  const chartDataset = useAppSelector(selectChartDataset);
+  const chartFormData = useAppSelector(selectChartFormData);
   const chartType = chartFormData?.viz_type;
 
   const applicableCustomizations = useMemo(() => {

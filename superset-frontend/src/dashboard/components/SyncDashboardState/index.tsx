@@ -19,7 +19,6 @@
 import { FC, useEffect } from 'react';
 
 import { pick, pickBy } from 'lodash';
-import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { DashboardContextForExplore } from 'src/types/DashboardContextForExplore';
 import {
@@ -32,6 +31,7 @@ import { getActiveFilters } from 'src/dashboard/util/activeDashboardFilters';
 import { getAllActiveFilters } from 'src/dashboard/util/activeAllDashboardFilters';
 import { enforceSharedLabelsColorsArray } from 'src/utils/colorScheme';
 import { Divider, Filter } from '@superset-ui/core';
+import { useAppSelector } from '../../../views/store';
 
 type Props = { dashboardPageId: string };
 
@@ -104,10 +104,9 @@ const selectDashboardContextForExplore = createSelector(
 );
 
 const SyncDashboardState: FC<Props> = ({ dashboardPageId }) => {
-  const dashboardContextForExplore = useSelector<
-    RootState,
-    DashboardContextForExplore
-  >(selectDashboardContextForExplore);
+  const dashboardContextForExplore = useAppSelector(
+    selectDashboardContextForExplore,
+  );
 
   useEffect(() => {
     updateDashboardTabLocalStorage(dashboardPageId, dashboardContextForExplore);

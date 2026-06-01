@@ -95,10 +95,10 @@ import {
   datasetsLabelLower,
   databaseLabel,
 } from 'src/features/semanticLayers/label';
-import { useSelector } from 'react-redux';
 import { QueryObjectColumns } from 'src/views/CRUD/types';
 import { WIDER_DROPDOWN_WIDTH } from 'src/components/ListView/utils';
 import type { BootstrapData } from 'src/types/bootstrapTypes';
+import { useAppSelector } from '../../views/store';
 
 const SEMANTIC_LAYERS_FLAG = 'SEMANTIC_LAYERS' as FeatureFlag;
 type DatasetExtra = {
@@ -514,10 +514,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     setSSHTunnelPrivateKeyPasswordFields,
   ] = useState<string[]>([]);
 
-  const PREVENT_UNSAFE_DEFAULT_URLS_ON_DATASET = useSelector<
-    BootstrapData,
-    boolean
-  >(
+  const PREVENT_UNSAFE_DEFAULT_URLS_ON_DATASET = useAppSelector(
     state =>
       state.common?.conf?.PREVENT_UNSAFE_DEFAULT_URLS_ON_DATASET || false,
   );
