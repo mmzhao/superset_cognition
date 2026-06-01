@@ -299,6 +299,24 @@ class DatabricksDynamicBaseEngineSpec(BasicParametersMixin, DatabricksBaseEngine
 
         return extra
 
+    @staticmethod
+    def _backtick_quote(identifier: str) -> str:
+        escaped = identifier.replace("`", "``")
+        return f"`{escaped}`"
+
+    @classmethod
+    def _qualified_target(cls, inspector: Inspector, schema: str | None) -> str:
+        """Build a backtick-quoted ``catalog.schema`` target for SHOW commands.
+
+        The databricks-sqlalchemy 1.x dialect omits backtick quoting in its
+        ``get_table_names``/``get_view_names`` implementations, which breaks
+        metadata discovery for catalogs or schemas containing hyphens.
+        """
+        dialect = inspector.bind.dialect
+        catalog: str = dialect.catalog or ""
+        target_schema: str = schema or dialect.schema or ""
+        return f"{cls._backtick_quote(catalog)}.{cls._backtick_quote(target_schema)}"
+
     @classmethod
     def get_table_names(
         cls,
@@ -306,9 +324,21 @@ class DatabricksDynamicBaseEngineSpec(BasicParametersMixin, DatabricksBaseEngine
         inspector: Inspector,
         schema: str | None,
     ) -> set[str]:
-        return super().get_table_names(
-            database, inspector, schema
-        ) - cls.get_view_names(database, inspector, schema)
+        target = cls._qualified_target(inspector, schema)
+        result = inspector.bind.execute(f"SHOW TABLES FROM {target}")
+        tables = {row[1] for row in result}
+        return tables - cls.get_view_names(database, inspector, schema)
+
+    @classmethod
+    def get_view_names(
+        cls,
+        database: Database,
+        inspector: Inspector,
+        schema: str | None,
+    ) -> set[str]:
+        target = cls._qualified_target(inspector, schema)
+        result = inspector.bind.execute(f"SHOW VIEWS FROM {target}")
+        return {row[1] for row in result}
 
     @classmethod
     def extract_errors(
