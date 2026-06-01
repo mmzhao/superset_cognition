@@ -765,5 +765,7 @@ class DatabricksPythonConnectorEngineSpec(DatabricksDynamicBaseEngineSpec):
         return uri, connect_args
 
 
-# TODO: remove once we've upgraded to SQLAlchemy>=2.0 and databricks-sql-python>=3.x
+# Kept for backwards compatibility with databricks-sqlalchemy<2.0.
+# The monkeypatch is a no-op when pyhive is not installed, which is the
+# case for databricks-sqlalchemy>=2.0 that ships its own dialect.
 monkeypatch_dialect()
