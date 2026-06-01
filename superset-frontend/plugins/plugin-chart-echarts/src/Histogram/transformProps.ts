@@ -32,6 +32,8 @@ import { HistogramChartProps, HistogramTransformedProps } from './types';
 import { LegendOrientation, LegendType, Refs } from '../types';
 import { defaultGrid, defaultYAxis } from '../defaults';
 import { getLegendProps } from '../utils/series';
+import { convertInteger } from '../utils/convertInteger';
+import { getPadding } from '../Timeseries/transformers';
 import { getDefaultTooltip } from '../utils/tooltip';
 import { getPercentFormatter } from '../utils/formatters';
 
@@ -55,13 +57,17 @@ export default function transformProps(
     colorScheme,
     column,
     groupby = [],
+    legendOrientation = 'top',
     normalize,
     showLegend,
     showValue,
     sliceId,
     xAxisFormat,
     xAxisTitle,
+    xAxisTitleMargin,
     yAxisTitle,
+    yAxisTitleMargin,
+    yAxisTitlePosition,
     yAxisFormat,
   } = formData;
   const { data } = queriesData[0];
@@ -152,27 +158,40 @@ export default function transformProps(
 
   type EChartsOption = ComposeOption<GridComponentOption | BarSeriesOption>;
 
+  const addYAxisTitleOffset =
+    !!yAxisTitle && convertInteger(yAxisTitleMargin) !== 0;
+  const addXAxisTitleOffset =
+    !!xAxisTitle && convertInteger(xAxisTitleMargin) !== 0;
+  const chartPadding = getPadding(
+    showLegend,
+    legendOrientation,
+    addYAxisTitleOffset,
+    false,
+    null,
+    addXAxisTitleOffset,
+    yAxisTitlePosition,
+    convertInteger(yAxisTitleMargin),
+    convertInteger(xAxisTitleMargin),
+  );
+
   const echartOptions: EChartsOption = {
     grid: {
       ...defaultGrid,
-      left: '5%',
-      right: '5%',
-      top: '10%',
-      bottom: '10%',
+      ...chartPadding,
     },
     xAxis: {
       data: xAxisData,
       name: xAxisTitle,
-      nameGap: 35,
+      nameGap: convertInteger(xAxisTitleMargin),
       type: 'category',
       nameLocation: 'middle',
     },
     yAxis: {
       ...defaultYAxis,
       name: yAxisTitle,
-      nameGap: normalize ? 55 : 40,
+      nameGap: convertInteger(yAxisTitleMargin),
       type: 'value',
-      nameLocation: 'middle',
+      nameLocation: yAxisTitlePosition === 'Left' ? 'middle' : 'end',
       axisLabel: {
         formatter: (value: number) => yAxisFormatter.format(value),
       },

@@ -31,6 +31,7 @@ import {
   D3_FORMAT_OPTIONS,
   D3_FORMAT_DOCS,
   D3_NUMBER_FORMAT_DESCRIPTION_VALUES_TEXT,
+  sections,
 } from '@superset-ui/chart-controls';
 import { showLegendControl, showValueControl } from '../controls';
 
@@ -108,6 +109,7 @@ const config: ControlPanelConfig = {
         ],
       ],
     },
+    sections.titleControls,
     {
       label: t('Chart Options'),
       expanded: true,
@@ -115,17 +117,6 @@ const config: ControlPanelConfig = {
         ['color_scheme'],
         [showValueControl],
         [showLegendControl],
-        [
-          {
-            name: 'x_axis_title',
-            config: {
-              type: 'TextControl',
-              label: t('X Axis Title'),
-              renderTrigger: true,
-              default: '',
-            },
-          },
-        ],
         [
           {
             name: 'x_axis_format',
@@ -137,17 +128,6 @@ const config: ControlPanelConfig = {
               default: 'SMART_NUMBER',
               choices: D3_FORMAT_OPTIONS,
               description: `${D3_FORMAT_DOCS} ${D3_NUMBER_FORMAT_DESCRIPTION_VALUES_TEXT}`,
-            },
-          },
-        ],
-        [
-          {
-            name: 'y_axis_title',
-            config: {
-              type: 'TextControl',
-              label: t('Y Axis Title'),
-              renderTrigger: true,
-              default: '',
             },
           },
         ],
