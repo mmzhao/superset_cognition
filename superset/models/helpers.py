@@ -2445,6 +2445,12 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
                     return ""
             if target_generic_type == utils.GenericDataType.BOOLEAN:
                 return utils.cast_to_boolean(value)
+            if (
+                target_generic_type == utils.GenericDataType.NUMERIC
+                and isinstance(value, int)
+                and not isinstance(value, bool)
+            ):
+                return float(value)
             return value
 
         if isinstance(values, (list, tuple)):
