@@ -692,7 +692,10 @@ export default function transformProps(
         hideOverlap: !(xAxisType === AxisType.Time && xAxisLabelRotation !== 0),
         formatter: deduplicatedFormatter,
         rotate: xAxisLabelRotation,
-        interval: xAxisLabelInterval,
+        interval:
+          xAxisLabelInterval === 'auto'
+            ? 'auto'
+            : Number(xAxisLabelInterval),
         ...(showMaxLabel && {
           showMaxLabel: true,
           alignMaxLabel: 'right',
