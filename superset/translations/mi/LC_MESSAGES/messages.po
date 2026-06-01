@@ -12077,7 +12077,7 @@ msgstr "Tuku"
 msgid "Subtitle"
 msgstr "Taitara-iti"
 
-msgid "Subtotal"
+msgid "Subvalue"
 msgstr "Tapeke-iti"
 
 msgid "Success"
