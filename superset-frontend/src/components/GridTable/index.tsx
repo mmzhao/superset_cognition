@@ -19,7 +19,12 @@
 import { useCallback, useMemo } from 'react';
 import { css, useTheme } from '@apache-superset/core/theme';
 import { ThemedAgGridReact } from '@superset-ui/core/components';
-import type { CellKeyDownEvent, Column, GridOptions } from 'ag-grid-community';
+import type {
+  CellKeyDownEvent,
+  Column,
+  GridOptions,
+  ValueGetterParams,
+} from 'ag-grid-community';
 import type { AgGridReactProps } from 'ag-grid-react';
 
 import copyTextToClipboard from 'src/utils/copy';
@@ -111,6 +116,7 @@ export function GridTable<RecordType extends object>({
             cellRenderer,
             sortable,
             comparator,
+            valueGetter: (params: ValueGetterParams) => params.data?.[label],
             ...(index === columns.length - 1 && {
               flex: 1,
               width,
