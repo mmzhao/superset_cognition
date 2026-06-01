@@ -291,3 +291,123 @@ def test_get_prequeries(mocker: MockerFixture) -> None:
         "USE CATALOG `evil`` USE CATALOG bad`",
         "USE SCHEMA `evil`` USE SCHEMA bad`",
     ]
+
+
+def test_qualified_target_quotes_hyphens(mocker: MockerFixture) -> None:
+    """
+    Test that _qualified_target properly backtick-quotes catalog and schema names
+    containing hyphens, preventing INVALID_IDENTIFIER errors.
+    """
+    from superset.db_engine_specs.databricks import (
+        DatabricksPythonConnectorEngineSpec,
+    )
+
+    dialect = mocker.MagicMock()
+    dialect.catalog = "my-staging-catalog"
+    dialect.schema = "my-poc-schema"
+
+    engine = mocker.MagicMock()
+    engine.dialect = dialect
+
+    inspector = mocker.MagicMock()
+    inspector.bind = engine
+
+    result = DatabricksPythonConnectorEngineSpec._qualified_target(inspector, None)
+    assert result == "`my-staging-catalog`.`my-poc-schema`"
+
+    result = DatabricksPythonConnectorEngineSpec._qualified_target(
+        inspector, "other-schema"
+    )
+    assert result == "`my-staging-catalog`.`other-schema`"
+
+
+def test_qualified_target_escapes_backticks(mocker: MockerFixture) -> None:
+    """
+    Test that backticks within identifiers are properly escaped.
+    """
+    from superset.db_engine_specs.databricks import (
+        DatabricksPythonConnectorEngineSpec,
+    )
+
+    dialect = mocker.MagicMock()
+    dialect.catalog = "evil`catalog"
+    dialect.schema = "evil`schema"
+
+    engine = mocker.MagicMock()
+    engine.dialect = dialect
+
+    inspector = mocker.MagicMock()
+    inspector.bind = engine
+
+    result = DatabricksPythonConnectorEngineSpec._qualified_target(inspector, None)
+    assert result == "`evil``catalog`.`evil``schema`"
+
+
+def test_get_table_names_quoted(mocker: MockerFixture) -> None:
+    """
+    Test that get_table_names uses backtick-quoted SHOW TABLES FROM.
+    """
+    from superset.db_engine_specs.databricks import (
+        DatabricksPythonConnectorEngineSpec,
+    )
+
+    database = mocker.MagicMock()
+
+    dialect = mocker.MagicMock()
+    dialect.catalog = "my-catalog"
+    dialect.schema = "my-schema"
+
+    engine = mocker.MagicMock()
+    engine.dialect = dialect
+    engine.execute.return_value = [
+        ("", "table1", False),
+        ("", "table2", False),
+        ("", "view1", False),
+    ]
+
+    inspector = mocker.MagicMock()
+    inspector.bind = engine
+
+    mocker.patch.object(
+        DatabricksPythonConnectorEngineSpec,
+        "get_view_names",
+        return_value={"view1"},
+    )
+
+    tables = DatabricksPythonConnectorEngineSpec.get_table_names(
+        database, inspector, None
+    )
+    assert tables == {"table1", "table2"}
+
+    engine.execute.assert_called_with("SHOW TABLES FROM `my-catalog`.`my-schema`")
+
+
+def test_get_view_names_quoted(mocker: MockerFixture) -> None:
+    """
+    Test that get_view_names uses backtick-quoted SHOW VIEWS FROM.
+    """
+    from superset.db_engine_specs.databricks import (
+        DatabricksPythonConnectorEngineSpec,
+    )
+
+    database = mocker.MagicMock()
+
+    dialect = mocker.MagicMock()
+    dialect.catalog = "my-catalog"
+    dialect.schema = "my-schema"
+
+    engine = mocker.MagicMock()
+    engine.dialect = dialect
+    engine.execute.return_value = [
+        ("", "view1", False),
+    ]
+
+    inspector = mocker.MagicMock()
+    inspector.bind = engine
+
+    views = DatabricksPythonConnectorEngineSpec.get_view_names(
+        database, inspector, "other-schema"
+    )
+    assert views == {"view1"}
+
+    engine.execute.assert_called_with("SHOW VIEWS FROM `my-catalog`.`other-schema`")
