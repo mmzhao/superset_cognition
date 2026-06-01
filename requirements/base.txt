@@ -223,7 +223,7 @@ markupsafe==3.0.2
     #   mako
     #   werkzeug
     #   wtforms
-marshmallow==3.26.2
+marshmallow==4.3.0
     # via
     #   apache-superset (pyproject.toml)
     #   flask-appbuilder
@@ -233,7 +233,7 @@ marshmallow-sqlalchemy==1.4.0
     # via
     #   -r requirements/base.in
     #   flask-appbuilder
-marshmallow-union==0.1.15
+marshmallow-union==0.1.15.post1
     # via apache-superset (pyproject.toml)
 mdurl==0.1.2
     # via markdown-it-py
