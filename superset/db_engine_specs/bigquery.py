@@ -23,7 +23,7 @@ import sys
 import urllib
 from datetime import datetime
 from re import Pattern
-from typing import Any, TYPE_CHECKING, TypedDict
+from typing import Any, Callable, TYPE_CHECKING, TypedDict
 
 import pandas as pd
 from apispec import APISpec
@@ -79,6 +79,48 @@ except ModuleNotFoundError:
 
 if TYPE_CHECKING:
     from superset.models.core import Database  # pragma: no cover
+
+
+class BigQueryStringType(types.TypeDecorator):
+    """Custom string type that uses backslash escaping for apostrophes.
+
+    BigQuery does not support double-apostrophe escaping (``'O''Brien'``),
+    which is the default SQLAlchemy literal processor behaviour.  Instead,
+    BigQuery expects backslash escaping (``'O\\'Brien'``).  This
+    ``TypeDecorator`` overrides the literal processor so that compiled SQL
+    with ``literal_binds=True`` produces valid BigQuery string literals.
+    """
+
+    impl = types.String
+    cache_ok = True
+
+    def process_literal_param(self, value: str | None, dialect: Any) -> str:
+        raw = str(value).replace("\\", "\\\\").replace("'", "\\'")
+        return f"'{raw}'"
+
+    def literal_processor(self, dialect: Any) -> Callable[[str | None], str]:
+        def process(value: str | None) -> str:
+            return self.process_literal_param(value, dialect)
+
+        return process
+
+
+def _monkeypatch_bigquery_dialect() -> None:
+    """Patch the BigQuery dialect to use backslash-escaped string literals.
+
+    Follows the same pattern as the Databricks dialect fix
+    (``DatabricksStringType`` + ``monkeypatch_dialect()`` in
+    ``superset/db_engine_specs/databricks.py``).
+    """
+    try:
+        from sqlalchemy_bigquery import BigQueryDialect  # noqa: F811
+
+        BigQueryDialect.colspecs[types.String] = BigQueryStringType
+    except ImportError:
+        pass
+
+
+_monkeypatch_bigquery_dialect()
 
 
 logger = logging.getLogger()

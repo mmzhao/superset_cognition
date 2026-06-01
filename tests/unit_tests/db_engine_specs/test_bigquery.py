@@ -35,6 +35,46 @@ from tests.unit_tests.db_engine_specs.utils import assert_convert_dttm
 from tests.unit_tests.fixtures.common import dttm  # noqa: F401
 
 
+def test_bigquery_string_literal_apostrophe_escaping() -> None:
+    """
+    Test that string literals containing apostrophes use backslash escaping.
+
+    BigQuery does not support double-apostrophe escaping ('O''Brien').
+    Instead it requires backslash escaping ('O\\'Brien').
+    """
+    from sqlalchemy import bindparam, column, String
+
+    # Importing the engine spec module triggers the dialect monkeypatch.
+    import superset.db_engine_specs.bigquery  # noqa: F401
+
+    dialect = BigQueryDialect()
+
+    # IN clause with apostrophe
+    col = column("name", String)
+    in_expr = col.in_(["Armando's", "Regular"])
+    compiled = str(
+        in_expr.compile(dialect=dialect, compile_kwargs={"literal_binds": True})
+    )
+    assert "Armando\\'s" in compiled
+    assert "''" not in compiled  # no doubled-apostrophe escaping
+
+    # Equality comparison
+    eq_expr = col == "O'Brien"
+    compiled_eq = str(
+        eq_expr.compile(dialect=dialect, compile_kwargs={"literal_binds": True})
+    )
+    assert "O\\'Brien" in compiled_eq
+    assert "''" not in compiled_eq
+
+    # bindparam used by WhereInMacro
+    bp = bindparam("val", "Fernando's")
+    compiled_bp = str(
+        bp.compile(dialect=dialect, compile_kwargs={"literal_binds": True})
+    )
+    assert "Fernando\\'s" in compiled_bp
+    assert "''" not in compiled_bp
+
+
 def test_get_fields() -> None:
     """
     Test the custom ``_get_fields`` method.
