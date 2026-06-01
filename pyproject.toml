@@ -103,7 +103,7 @@ dependencies = [
     "sshtunnel>=0.4.0, <0.5",
     "simplejson>=3.15.0",
     "slack_sdk>=3.19.0, <4",
-    "sqlalchemy>=1.4, <2",
+    "sqlalchemy>=1.4",
     "sqlalchemy-utils>=0.38.0, <0.43", # expanding lowerbound to work with pydoris
     "sqlglot>=30.8.0, <31",
     # newer pandas needs 0.9+
@@ -135,8 +135,8 @@ d1 = [
 ]
 databend = ["databend-sqlalchemy>=0.3.2, <1.0"]
 databricks = [
-    "databricks-sql-connector==4.2.6",
-    "databricks-sqlalchemy==1.0.5",
+    "databricks-sql-connector>=4.0.0",
+    "databricks-sqlalchemy>=2.0.4,<3",
 ]
 db2 = ["ibm-db-sa>0.3.8, <=0.4.4"]
 denodo = ["denodo-sqlalchemy>=2.0.5,<2.1.0"]
