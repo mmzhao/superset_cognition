@@ -213,7 +213,10 @@ export default function transformProps(chartProps: EchartsBubbleChartProps) {
           type: 'dashed',
         },
       },
-      interval: xAxisLabelInterval,
+      interval:
+        xAxisLabelInterval === 'auto'
+          ? 'auto'
+          : Number(xAxisLabelInterval),
       scale: true,
       name: bubbleXAxisTitle,
       nameLocation: 'middle',

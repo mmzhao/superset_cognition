@@ -899,7 +899,10 @@ export default function transformProps(
       hideOverlap: !(xAxisType === AxisType.Time && xAxisLabelRotation !== 0),
       formatter: deduplicatedFormatter,
       rotate: xAxisLabelRotation,
-      interval: xAxisLabelInterval,
+      interval:
+        xAxisLabelInterval === 'auto'
+          ? 'auto'
+          : Number(xAxisLabelInterval),
       // Force last label on non-rotated time axes to prevent
       // hideOverlap from hiding it. Skipped when rotated to
       // avoid phantom labels at the axis boundary.
