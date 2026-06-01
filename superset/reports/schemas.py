@@ -270,7 +270,7 @@ class ReportSchedulePostSchema(Schema):
         },
         allow_none=True,
         required=False,
-        default=None,
+        dump_default=None,
     )
 
     @validates("custom_width")
@@ -432,7 +432,7 @@ class ReportSchedulePutSchema(Schema):
         },
         allow_none=True,
         required=False,
-        default=None,
+        dump_default=None,
     )
 
     @validates("custom_width")

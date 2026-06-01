@@ -77,7 +77,7 @@ class ImportV1ThemeSchema(Schema):
                 value.clear()
                 value.update(sanitized_config)
             else:
-                self.context["sanitized_json_data"] = json.dumps(sanitized_config)
+                self._sanitized_json_data = json.dumps(sanitized_config)
 
 
 class ThemePostSchema(Schema):
@@ -104,7 +104,7 @@ class ThemePostSchema(Schema):
         # Note: This modifies the input data to ensure sanitized content is stored
         if sanitized_config != theme_config:
             # Re-serialize the sanitized config
-            self.context["sanitized_json_data"] = json.dumps(sanitized_config)
+            self._sanitized_json_data = json.dumps(sanitized_config)
 
 
 class ThemePutSchema(Schema):
@@ -131,7 +131,7 @@ class ThemePutSchema(Schema):
         # Note: This modifies the input data to ensure sanitized content is stored
         if sanitized_config != theme_config:
             # Re-serialize the sanitized config
-            self.context["sanitized_json_data"] = json.dumps(sanitized_config)
+            self._sanitized_json_data = json.dumps(sanitized_config)
 
 
 openapi_spec_methods_override = {
