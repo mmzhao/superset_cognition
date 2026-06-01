@@ -397,14 +397,20 @@ def parse_js_uri_path_item(
 
 
 def cast_to_num(value: float | int | str | None) -> float | int | None:
-    """Casts a value to an int/float
+    """Casts a value to a float/int
+
+    Always returns ``float`` for string inputs so that numeric filter lists
+    contain a homogeneous type.  Mixed ``int``/``float`` lists caused some
+    database drivers to infer the bind-parameter type from the first element,
+    silently truncating decimals when the first selected value was an integer
+    (see issue #13 / upstream apache/superset#33206).
 
     >>> cast_to_num('1 ')
     1.0
     >>> cast_to_num(' 2')
     2.0
     >>> cast_to_num('5')
-    5
+    5.0
     >>> cast_to_num('5.2')
     5.2
     >>> cast_to_num(10)
@@ -417,15 +423,13 @@ def cast_to_num(value: float | int | str | None) -> float | int | None:
     True
 
     :param value: value to be converted to numeric representation
-    :returns: value cast to `int` if value is all digits, `float` if `value` is
-              decimal value and `None`` if it can't be converted
+    :returns: value cast to ``float`` for string inputs, passed through
+              unchanged for ``int``/``float``, and ``None`` if conversion fails
     """
     if value is None:
         return None
     if isinstance(value, (int, float)):
         return value
-    if value.isdigit():
-        return int(value)
     try:
         return float(value)
     except ValueError:

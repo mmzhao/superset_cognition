@@ -402,7 +402,8 @@ class TestUtils(SupersetTestCase):
         self.assertRaises(marshmallow.ValidationError, validator, 4)  # noqa: PT027
 
     def test_cast_to_num(self) -> None:
-        assert cast_to_num("5") == 5
+        assert cast_to_num("5") == 5.0
+        assert isinstance(cast_to_num("5"), float)
         assert cast_to_num("5.2") == 5.2
         assert cast_to_num(10) == 10
         assert cast_to_num(10.1) == 10.1
