@@ -49,6 +49,11 @@ def create_app(
     superset_config_module: Optional[str] = None,
     superset_app_root: Optional[str] = None,
 ) -> Flask:
+    # Must run before FAB schemas are instantiated (init_app → configure_fab).
+    from superset.marshmallow_compat import patch_marshmallow_for_fab
+
+    patch_marshmallow_for_fab()
+
     app = SupersetApp(__name__)
 
     try:
