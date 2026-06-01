@@ -17,22 +17,22 @@
  * under the License.
  */
 import { QueryFormColumn, QueryFormData } from '@superset-ui/core';
-import { BaseChartProps, BaseTransformedProps } from '../types';
+import { BaseChartProps, BaseTransformedProps, TitleFormData } from '../types';
 
-export type HistogramFormData = QueryFormData & {
-  bins: number;
-  column: QueryFormColumn;
-  colorScheme?: string;
-  cumulative: boolean;
-  normalize: boolean;
-  sliceId: number;
-  showLegend: boolean;
-  showValue: boolean;
-  xAxisFormat: string;
-  xAxisTitle: string;
-  yAxisFormat: string;
-  yAxisTitle: string;
-};
+export type HistogramFormData = QueryFormData &
+  TitleFormData & {
+    bins: number;
+    column: QueryFormColumn;
+    colorScheme?: string;
+    cumulative: boolean;
+    legendOrientation: string;
+    normalize: boolean;
+    sliceId: number;
+    showLegend: boolean;
+    showValue: boolean;
+    xAxisFormat: string;
+    yAxisFormat: string;
+  };
 
 export interface HistogramChartProps extends BaseChartProps<HistogramFormData> {
   formData: HistogramFormData;
