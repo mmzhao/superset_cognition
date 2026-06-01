@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector, useDispatch } from 'react-redux';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { URL_PARAMS } from 'src/constants';
 import { getUrlParam } from 'src/utils/urlUtils';
@@ -28,19 +27,20 @@ import {
 } from '../nativeFilters/FilterBar/state';
 import { useChartCustomizationFromRedux } from '../nativeFilters/state';
 import { toggleNativeFiltersBar } from '../../actions/dashboardState';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 export const useNativeFilters = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const showNativeFilters = useSelector<RootState, boolean>(
+  const showNativeFilters = useAppSelector<RootState, boolean>(
     () => getUrlParam(URL_PARAMS.showFilters) ?? true,
   );
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
-  const dashboardFiltersOpen = useSelector<RootState, boolean>(
+  const dashboardFiltersOpen = useAppSelector<RootState, boolean>(
     state => state.dashboardState.nativeFiltersBarOpen ?? false,
   );
 

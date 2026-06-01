@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import * as reactRedux from 'react-redux';
+import * as storeModule from 'src/views/store';
 import fetchMock from 'fetch-mock';
 import {
   render,
@@ -44,9 +44,9 @@ jest.mock('src/dashboard/util/isEmbedded', () => ({
 
 const mockIsEmbedded = isEmbedded as jest.MockedFunction<typeof isEmbedded>;
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(),
+jest.mock('src/views/store', () => ({
+  ...jest.requireActual('src/views/store'),
+  useAppSelector: jest.fn(),
 }));
 
 jest.mock('src/features/databases/DatabaseModal', () => {
@@ -169,7 +169,7 @@ const mockNonExamplesDB = Array.from({ length: 2 })
     },
   }));
 
-const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
+const useSelectorMock = jest.spyOn(storeModule, 'useAppSelector');
 
 const getDatabaseWithFileFiterMockUrl =
   'glob:*api/v1/database/?q=(filters:!((col:allow_file_upload,opr:upload_is_enabled,value:!t)))';

@@ -18,7 +18,6 @@
  */
 
 import { renderHook } from '@testing-library/react';
-import { useSelector } from 'react-redux';
 import {
   NativeFilterType,
   Filter,
@@ -26,22 +25,23 @@ import {
   ChartCustomizationType,
   type ChartCustomization,
 } from '@superset-ui/core';
+import { useAppSelector } from 'src/views/store';
 import {
   useChartCustomizationConfiguration,
   useIsFilterInScope,
   useSelectFiltersInScope,
 } from './state';
 
-jest.mock('react-redux', () => {
-  const actual = jest.requireActual('react-redux');
+jest.mock('src/views/store', () => {
+  const actual = jest.requireActual('src/views/store');
   return {
     ...actual,
-    useSelector: jest.fn(),
+    useAppSelector: jest.fn(),
   };
 });
 
 beforeEach(() => {
-  (useSelector as jest.Mock).mockImplementation(selector => {
+  (useAppSelector as jest.Mock).mockImplementation(selector => {
     if (selector.name === 'useActiveDashboardTabs') {
       return ['TAB_1'];
     }

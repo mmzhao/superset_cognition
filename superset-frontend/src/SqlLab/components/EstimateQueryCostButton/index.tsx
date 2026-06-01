@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { Alert } from '@apache-superset/core/components';
 import { css, styled } from '@apache-superset/core/theme';
@@ -32,6 +31,7 @@ import {
 } from '@superset-ui/core/components';
 import useQueryEditor from 'src/SqlLab/hooks/useQueryEditor';
 import { SqlLabRootState, QueryCostEstimate } from 'src/SqlLab/types';
+import { useAppSelector } from 'src/views/store';
 
 export interface EstimateQueryCostButtonProps {
   getEstimate: Function;
@@ -52,7 +52,7 @@ const EstimateQueryCostButton = ({
   tooltip = '',
   disabled = false,
 }: EstimateQueryCostButtonProps) => {
-  const queryCostEstimate = useSelector<
+  const queryCostEstimate = useAppSelector<
     SqlLabRootState,
     QueryCostEstimate | undefined
   >(state => state.sqlLab.queryCostEstimates?.[queryEditorId]);

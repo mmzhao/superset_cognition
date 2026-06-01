@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useSelector } from 'react-redux';
 import {
   render,
   screen,
@@ -34,6 +33,7 @@ import { defaultControls, defaultState } from 'src/explore/store';
 import { ExplorePageState } from 'src/explore/types';
 import { getFormDataFromControls } from 'src/explore/controlUtils';
 import {
+import { useAppSelector } from 'src/views/store';
   ControlPanelsContainer,
   ControlPanelsContainerProps,
 } from 'src/explore/components/ControlPanelsContainer';
@@ -46,7 +46,7 @@ jest.mock('@superset-ui/core', () => ({
 const mockIsFeatureEnabled = isFeatureEnabled as jest.Mock;
 
 const FormDataMock = () => {
-  const formData = useSelector(
+  const formData = useAppSelector(
     (state: ExplorePageState) => state.explore.form_data,
   );
 

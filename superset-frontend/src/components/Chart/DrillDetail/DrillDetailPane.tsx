@@ -25,7 +25,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import {
   BinaryQueryObjectFilterClause,
@@ -58,6 +57,7 @@ import TableControls from './DrillDetailTableControls';
 import { getDrillPayload } from './utils';
 import { ResultsPage } from './types';
 import { datasetLabelLower } from 'src/features/semanticLayers/label';
+import { useAppSelector } from 'src/views/store';
 
 const DEFAULT_PAGE_SIZE = 50;
 
@@ -105,16 +105,16 @@ export default function DrillDetailPane({
     Record<string, TimeFormatting>
   >({});
 
-  const dashboardId = useSelector<RootState, number>(
+  const dashboardId = useAppSelector<RootState, number>(
     ({ dashboardInfo }) => dashboardInfo.id,
   );
 
-  const SAMPLES_ROW_LIMIT = useSelector(
+  const SAMPLES_ROW_LIMIT = useAppSelector(
     (state: { common: { conf: JsonObject } }) =>
       state.common.conf.SAMPLES_ROW_LIMIT,
   );
 
-  const ROW_LIMIT = useSelector(
+  const ROW_LIMIT = useAppSelector(
     (state: { common: { conf: JsonObject } }) => state.common.conf.ROW_LIMIT,
   );
 

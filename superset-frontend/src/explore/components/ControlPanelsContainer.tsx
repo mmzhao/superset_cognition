@@ -58,7 +58,6 @@ import {
   isTemporalColumn,
   sections,
 } from '@superset-ui/chart-controls';
-import { useSelector } from 'react-redux';
 import { kebabCase, isEqual } from 'lodash';
 
 import {
@@ -82,6 +81,7 @@ import { RunQueryButton } from './RunQueryButton';
 import { Operators } from '../constants';
 import { Clauses } from './controls/FilterControl/types';
 import StashFormDataContainer from './StashFormDataContainer';
+import { useAppSelector } from 'src/views/store';
 
 const TABS_KEYS = {
   DATA: 'DATA',
@@ -310,12 +310,12 @@ export const ControlPanelsContainer = (props: ControlPanelsContainerProps) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const controlsTransferred = useSelector<
+  const controlsTransferred = useAppSelector<
     ExplorePageState,
     string[] | undefined
   >(state => state.explore.controlsTransferred);
 
-  const defaultTimeFilter = useSelector<ExplorePageState>(
+  const defaultTimeFilter = useAppSelector<ExplorePageState>(
     state => state.common?.conf?.DEFAULT_TIME_FILTER || NO_TIME_RANGE,
   );
 

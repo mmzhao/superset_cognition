@@ -28,7 +28,6 @@ import {
   useMemo,
 } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import {
   DataMaskStateWithId,
   DataMaskWithId,
@@ -77,6 +76,7 @@ import ActionButtons from './ActionButtons';
 import Horizontal from './Horizontal';
 import Vertical from './Vertical';
 import {
+import { useAppDispatch, useAppSelector } from 'src/views/store';
   useSelectFiltersInScope,
   useChartCustomizationConfiguration,
 } from '../state';
@@ -183,7 +183,7 @@ const FilterBar: FC<FiltersBarProps> = ({
   const [pendingCustomizationDataMasks, setPendingCustomizationDataMasks] =
     useState<Record<string, DataMask>>(EMPTY_DATA_MASK_RECORD);
   const chartCustomizationValues = useChartCustomizationConfiguration();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [updateKey, setUpdateKey] = useState(0);
   const tabId = useTabId();
   const filters = useFilters();
@@ -196,14 +196,14 @@ const FilterBar: FC<FiltersBarProps> = ({
     () => filterValues.filter(isNativeFilter),
     [filterValues],
   );
-  const dashboardId = useSelector<any, number>(
+  const dashboardId = useAppSelector<any, number>(
     ({ dashboardInfo }) => dashboardInfo?.id,
   );
   const previousDashboardId = usePrevious(dashboardId);
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
-  const user: UserWithPermissionsAndRoles = useSelector<
+  const user: UserWithPermissionsAndRoles = useAppSelector<
     RootState,
     UserWithPermissionsAndRoles
   >(state => state.user);
@@ -411,7 +411,7 @@ const FilterBar: FC<FiltersBarProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardId, dataMaskAppliedText, history, updateKey, tabId]);
 
-  const pendingChartCustomizations = useSelector<
+  const pendingChartCustomizations = useAppSelector<
     RootState,
     Record<string, ChartCustomization> | undefined
   >(state => state.dashboardInfo.pendingChartCustomizations);

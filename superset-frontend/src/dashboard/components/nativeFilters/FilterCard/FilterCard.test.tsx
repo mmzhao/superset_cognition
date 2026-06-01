@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import * as reactRedux from 'react-redux';
+import * as storeModule from 'src/views/store';
 import { Filter, NativeFilterType } from '@superset-ui/core';
 import { render, screen, userEvent } from 'spec/helpers/testing-library';
 import { DASHBOARD_ROOT_ID } from 'src/dashboard/util/constants';
@@ -285,7 +285,7 @@ test('filter card with dependency', () => {
 });
 
 test('focus filter on filter card dependency click', () => {
-  const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
+  const useDispatchMock = jest.spyOn(storeModule, 'useAppDispatch');
   const dummyDispatch = jest.fn();
   useDispatchMock.mockReturnValue(dummyDispatch);
 

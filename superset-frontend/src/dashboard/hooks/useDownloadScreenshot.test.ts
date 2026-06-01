@@ -35,8 +35,9 @@ jest.mock('@superset-ui/core', () => ({
   },
 }));
 
-jest.mock('react-redux', () => ({
-  useSelector: jest.fn(() => undefined),
+jest.mock('src/views/store', () => ({
+  ...jest.requireActual('src/views/store'),
+  useAppSelector: jest.fn(() => undefined),
 }));
 
 jest.mock('src/components/MessageToasts/withToasts', () => ({

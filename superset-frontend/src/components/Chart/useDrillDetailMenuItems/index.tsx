@@ -35,13 +35,13 @@ import {
   removeHTMLTags,
 } from '@superset-ui/core';
 import { css, styled } from '@apache-superset/core/theme';
-import { useSelector } from 'react-redux';
 import { type ItemType } from '@superset-ui/core/components/Menu';
 import { RootState } from 'src/dashboard/types';
 import { getSubmenuYOffset } from '../utils';
 import { MenuItemTooltip } from '../DisabledMenuItemTooltip';
 import { TruncatedMenuLabel } from '../MenuItemWithTruncation';
 import { Dataset } from '../types';
+import { useAppSelector } from 'src/views/store';
 
 const DRILL_TO_DETAIL = t('Drill to detail');
 const DRILL_TO_DETAIL_BY = t('Drill to detail by');
@@ -110,7 +110,7 @@ export const useDrillDetailMenuItems = ({
   key,
   ...props
 }: DrillDetailMenuItemsProps): ItemType[] => {
-  const drillToDetailDisabled = useSelector<RootState, boolean | undefined>(
+  const drillToDetailDisabled = useAppSelector<RootState, boolean | undefined>(
     ({ datasources }) =>
       datasources[formData.datasource]?.database?.disable_drill_to_detail,
   );

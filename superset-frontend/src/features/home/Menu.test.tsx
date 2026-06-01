@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import * as reactRedux from 'react-redux';
+import * as storeModule from 'src/views/store';
 import fetchMock from 'fetch-mock';
 import { render, screen, userEvent } from 'spec/helpers/testing-library';
 import setupCodeOverrides from 'src/setup/setupCodeOverrides';
@@ -252,7 +252,7 @@ const notanonProps = {
   },
 };
 
-const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
+const useSelectorMock = jest.spyOn(storeModule, 'useAppSelector');
 const staticAssetsPrefixMock = jest.spyOn(
   getBootstrapData,
   'staticAssetsPrefix',

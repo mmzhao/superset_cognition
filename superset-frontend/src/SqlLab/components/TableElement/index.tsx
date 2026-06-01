@@ -17,8 +17,7 @@
  * under the License.
  */
 import { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import type { QueryEditor, SqlLabRootState, Table } from 'src/SqlLab/types';
 import {
   ButtonGroup,
@@ -109,7 +108,7 @@ const TableElement = ({ table, ...props }: TableElementProps) => {
     ...tableMetadata,
     ...tableExtendedMetadata,
   };
-  const queryEditors = useSelector<SqlLabRootState, QueryEditor[]>(
+  const queryEditors = useAppSelector<SqlLabRootState, QueryEditor[]>(
     state => state.sqlLab.queryEditors,
   );
   const currentTable = { ...tableData, ...table };

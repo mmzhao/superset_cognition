@@ -18,7 +18,6 @@
  */
 
 import { useCallback, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { styled, useTheme, css } from '@apache-superset/core/theme';
 import { MenuProps } from '@superset-ui/core/components/Menu';
@@ -35,6 +34,7 @@ import { useFilters } from 'src/dashboard/components/nativeFilters/FilterBar/sta
 import { useFilterConfigModal } from 'src/dashboard/components/nativeFilters/FilterBar/FilterConfigurationLink/useFilterConfigModal';
 import { useCrossFiltersScopingModal } from '../CrossFilters/ScopingModal/useCrossFiltersScopingModal';
 import FilterConfigurationLink from '../FilterConfigurationLink';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 type SelectedKey = FilterBarOrientation | string | number;
 
@@ -58,11 +58,11 @@ const isOrientation = (o: SelectedKey): o is FilterBarOrientation =>
 
 const FilterBarSettings = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const isCrossFiltersEnabled = useSelector<RootState, boolean>(
+  const dispatch = useAppDispatch();
+  const isCrossFiltersEnabled = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.crossFiltersEnabled,
   );
-  const filterBarOrientation = useSelector<RootState, FilterBarOrientation>(
+  const filterBarOrientation = useAppSelector<RootState, FilterBarOrientation>(
     ({ dashboardInfo }) => dashboardInfo.filterBarOrientation,
   );
   const [selectedFilterBarOrientation, setSelectedFilterBarOrientation] =
@@ -71,12 +71,12 @@ const FilterBarSettings = () => {
   const [crossFiltersEnabled, setCrossFiltersEnabled] = useState<boolean>(
     isCrossFiltersEnabled,
   );
-  const canEdit = useSelector<RootState, boolean>(
+  const canEdit = useAppSelector<RootState, boolean>(
     ({ dashboardInfo }) => dashboardInfo.dash_edit_perm,
   );
   const filters = useFilters();
   const filterValues = useMemo(() => Object.values(filters), [filters]);
-  const dashboardId = useSelector<RootState, number>(
+  const dashboardId = useAppSelector<RootState, number>(
     ({ dashboardInfo }) => dashboardInfo.id,
   );
 

@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import type { Location, Action } from 'history';
 import { t } from '@apache-superset/core/translation';
@@ -43,6 +42,7 @@ import { fallbackExploreInitialData } from 'src/explore/fixtures';
 import { getItem, LocalStorageKeys } from 'src/utils/localStorageHelpers';
 import { getFormDataWithDashboardContext } from 'src/explore/controlUtils/getFormDataWithDashboardContext';
 import type Chart from 'src/types/Chart';
+import { useAppDispatch } from 'src/views/store';
 
 const isValidResult = (rv: JsonObject): boolean =>
   rv?.result?.form_data && rv?.result?.dataset;
@@ -135,7 +135,7 @@ export default function ExplorePage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const fetchGeneration = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const loadExploreData = useCallback(

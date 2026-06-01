@@ -17,7 +17,6 @@
  * under the License.
  */
 import { useCallback, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useToasts } from 'src/components/MessageToasts/withToasts';
 import { last } from 'lodash';
 import rison from 'rison';
@@ -32,6 +31,7 @@ import {
 import { RootState } from 'src/dashboard/types';
 import { getDashboardUrlParams } from 'src/utils/urlUtils';
 import { DownloadScreenshotFormat } from '../components/menu/DownloadMenuItems/types';
+import { useAppSelector } from 'src/views/store';
 
 const RETRY_INTERVAL = 3000;
 const MAX_RETRIES = 30;
@@ -40,14 +40,14 @@ export const useDownloadScreenshot = (
   dashboardId: number,
   logEvent?: Function,
 ) => {
-  const activeTabs = useSelector(
+  const activeTabs = useAppSelector(
     (state: RootState) => state.dashboardState.activeTabs || undefined,
   );
-  const anchor = useSelector(
+  const anchor = useAppSelector(
     (state: RootState) =>
       last(state.dashboardState.directPathToChild) || undefined,
   );
-  const dataMask = useSelector(
+  const dataMask = useAppSelector(
     (state: RootState) => state.dataMask || undefined,
   );
 

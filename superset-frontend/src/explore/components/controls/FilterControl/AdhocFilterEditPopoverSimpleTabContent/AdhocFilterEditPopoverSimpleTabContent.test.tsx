@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import * as redux from 'react-redux';
+import * as storeModule from 'src/views/store';
 import {
   act,
   render,
@@ -116,7 +116,7 @@ const getAdvancedDataTypeTestProps = (overrides?: Record<string, unknown>) => {
 function setup(overrides?: Record<string, unknown>) {
   const onChange = jest.fn();
   const validHandler = jest.fn();
-  const spy = jest.spyOn(redux, 'useSelector');
+  const spy = jest.spyOn(storeModule, 'useAppSelector');
   spy.mockReturnValue({});
   const props = {
     adhocFilter: simpleAdhocFilter,
@@ -733,7 +733,7 @@ test('advanced data type operator list should update after API response', async 
 test('dropdown should remain open when clicked after filter is configured', async () => {
   const onChange = jest.fn();
   const validHandler = jest.fn();
-  const spy = jest.spyOn(redux, 'useSelector');
+  const spy = jest.spyOn(storeModule, 'useAppSelector');
   spy.mockReturnValue({});
 
   const filterWithSubjectAndOperator = new AdhocFilter({

@@ -18,20 +18,20 @@
  */
 
 import { DataMaskStateWithId } from '@superset-ui/core';
-import { useSelector } from 'react-redux';
 import { RootState } from 'src/dashboard/types';
 import { useChartLayoutItems } from 'src/dashboard/util/useChartLayoutItems';
 import { useChartIds } from 'src/dashboard/util/charts/useChartIds';
 import crossFiltersSelector from './selectors';
 import VerticalCollapse from './VerticalCollapse';
 import { useChartsVerboseMaps } from '../utils';
+import { useAppSelector } from 'src/views/store';
 
 const CrossFiltersVertical = ({
   hideHeader = false,
 }: {
   hideHeader?: boolean;
 }) => {
-  const dataMask = useSelector<RootState, DataMaskStateWithId>(
+  const dataMask = useAppSelector<RootState, DataMaskStateWithId>(
     state => state.dataMask,
   );
   const chartIds = useChartIds();

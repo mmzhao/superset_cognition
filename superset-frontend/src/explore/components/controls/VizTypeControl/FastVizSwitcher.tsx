@@ -17,7 +17,6 @@
  * under the License.
  */
 import { memo, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { t } from '@apache-superset/core/translation';
 import { css, SupersetTheme } from '@apache-superset/core/theme';
 import { Flex, Icons } from '@superset-ui/core/components';
@@ -26,6 +25,7 @@ import { ExplorePageState } from 'src/explore/types';
 import { FastVizSwitcherProps } from './types';
 import { VizTile } from './VizTile';
 import { FEATURED_CHARTS, CUSTOM_CHART_ICONS } from './constants';
+import { useAppSelector } from 'src/views/store';
 
 export const antdIconProps = {
   iconSize: 'l' as const,
@@ -39,7 +39,7 @@ export const antdIconProps = {
 
 export const FastVizSwitcher = memo(
   ({ currentSelection, onChange }: FastVizSwitcherProps) => {
-    const currentViz = useSelector<ExplorePageState, string | undefined>(
+    const currentViz = useAppSelector<ExplorePageState, string | undefined>(
       state =>
         state.charts?.[getChartKey(state.explore)]?.latestQueryFormData
           ?.viz_type,

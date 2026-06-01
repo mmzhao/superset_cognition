@@ -32,9 +32,9 @@ import { RISON_UNMATCHED_DATAMASK_ID } from 'src/dashboard/util/risonFilters';
 import UrlFiltersVertical from './Vertical';
 
 const mockDispatch = jest.fn();
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: () => mockDispatch,
+jest.mock('src/views/store', () => ({
+  ...jest.requireActual('src/views/store'),
+  useAppDispatch: () => mockDispatch,
 }));
 
 const seedUrl = (search: string) => {

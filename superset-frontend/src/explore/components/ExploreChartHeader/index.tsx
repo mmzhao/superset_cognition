@@ -18,7 +18,6 @@
  */
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { QueryFormData, JsonObject } from '@superset-ui/core';
 import {
   Tooltip,
@@ -53,6 +52,7 @@ import { ReportObject } from 'src/features/reports/types';
 import { User } from 'src/types/bootstrapTypes';
 import { useExploreAdditionalActionsMenu } from '../useExploreAdditionalActionsMenu';
 import { useExploreMetadataBar } from './useExploreMetadataBar';
+import { useAppDispatch } from 'src/views/store';
 
 interface ExploreActions {
   updateChartTitle: (title: string) => void;
@@ -117,7 +117,7 @@ const ExploreChartHeader: FC<ExploreChartHeaderProps> = ({
   metadata,
   isSaveModalVisible,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { latestQueryFormData, sliceFormData } = chart;
   const [isPropertiesModalOpen, setIsPropertiesModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);

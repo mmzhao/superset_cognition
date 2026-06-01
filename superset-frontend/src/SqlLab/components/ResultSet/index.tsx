@@ -27,8 +27,8 @@ import {
 } from 'react';
 
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useAppDispatch } from 'src/views/store';
+import { shallowEqual } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 import { useHistory } from 'react-router-dom';
 import { pick } from 'lodash';
 import {
@@ -173,11 +173,11 @@ const ResultSet = ({
   defaultQueryLimit,
   useFixedHeight = false,
 }: ResultSetProps) => {
-  const streamingThreshold = useSelector(
+  const streamingThreshold = useAppSelector(
     (state: SqlLabRootState) =>
       state.common?.conf?.CSV_STREAMING_ROW_THRESHOLD || 1000,
   );
-  const query = useSelector(
+  const query = useAppSelector(
     ({ sqlLab: { queries } }: SqlLabRootState) =>
       pick(queries[queryId], [
         'id',

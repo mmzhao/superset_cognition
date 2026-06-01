@@ -24,12 +24,12 @@ import {
   FilterState,
 } from '@superset-ui/core';
 import { isEqual } from 'lodash';
-import { useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { areObjectsEqual } from 'src/reduxUtils';
 import { testWithId } from 'src/utils/testUtils';
 import { RootState } from 'src/dashboard/types';
 import { FilterElement } from './FilterControls/types';
+import { useAppSelector } from 'src/views/store';
 
 export const getOnlyExtraFormData = (
   data: DataMaskStateWithId,
@@ -165,7 +165,7 @@ const chartsVerboseMapSelector = createSelector(
 );
 
 export const useChartsVerboseMaps = () =>
-  useSelector<RootState, { [chartId: string]: Record<string, string> }>(
+  useAppSelector<RootState, { [chartId: string]: Record<string, string> }>(
     chartsVerboseMapSelector,
   );
 

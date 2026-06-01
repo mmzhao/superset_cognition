@@ -17,11 +17,11 @@
  * under the License.
  */
 import { ensureIsArray, Filter } from '@superset-ui/core';
-import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'src/dashboard/types';
 import { FilterElement } from '../FilterBar/FilterControls/types';
+import { useAppSelector } from 'src/views/store';
 
 const EMPTY_ARRAY: Filter[] = [];
 
@@ -46,5 +46,5 @@ export const useFilterDependencies = (filter: FilterElement) => {
     [filterDependencyIds.join(',')],
   );
 
-  return useSelector(selectFilterDependencies);
+  return useAppSelector(selectFilterDependencies);
 };

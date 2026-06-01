@@ -18,7 +18,6 @@
  */
 import { RefObject, useMemo } from 'react';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 import { Metric } from '@superset-ui/core';
 import { css, styled, useTheme } from '@apache-superset/core/theme';
 import { ColumnMeta } from '@superset-ui/chart-controls';
@@ -31,6 +30,7 @@ import { Icons } from '@superset-ui/core/components/Icons';
 import { ExplorePageState } from 'src/explore/types';
 
 import { DatasourcePanelDndItem } from '../types';
+import { useAppSelector } from 'src/views/store';
 
 const DatasourceItemContainer = styled.div`
   ${({ theme }) => css`
@@ -75,11 +75,11 @@ export default function DatasourcePanelDragOption(
 
   // Read compatibility lists from Redux.
   // `null` means no filtering is active (SQL datasets, or no selection yet).
-  const compatibleMetrics = useSelector<
+  const compatibleMetrics = useAppSelector<
     ExplorePageState,
     string[] | null | undefined
   >(state => state.explore.compatibleMetrics);
-  const compatibleDimensions = useSelector<
+  const compatibleDimensions = useAppSelector<
     ExplorePageState,
     string[] | null | undefined
   >(state => state.explore.compatibleDimensions);

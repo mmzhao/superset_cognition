@@ -27,7 +27,6 @@ import {
 import { usePrevious } from '@superset-ui/core';
 import { useTheme, styled } from '@apache-superset/core/theme';
 import { t } from '@apache-superset/core/translation';
-import { useSelector } from 'react-redux';
 import { Icons } from '@superset-ui/core/components/Icons';
 import { LOG_ACTIONS_SELECT_DASHBOARD_TAB } from 'src/logger/LogUtils';
 import { Modal } from '@superset-ui/core/components';
@@ -43,6 +42,7 @@ import { TABS_TYPE, TAB_TYPE } from '../../../util/componentTypes';
 import TabsRenderer from '../TabsRenderer';
 import type { LayoutItem, RootState } from 'src/dashboard/types';
 import type { DropResult } from 'src/dashboard/components/dnd/dragDroppableConfig';
+import { useAppSelector } from 'src/views/store';
 
 export interface TabsProps {
   id: string;
@@ -120,14 +120,14 @@ interface DraggableChildProps {
 const Tabs = (props: TabsProps): ReactElement => {
   const theme = useTheme();
 
-  const nativeFilters = useSelector((state: RootState) => state.nativeFilters);
-  const activeTabs = useSelector(
+  const nativeFilters = useAppSelector((state: RootState) => state.nativeFilters);
+  const activeTabs = useAppSelector(
     (state: RootState) => state.dashboardState.activeTabs,
   );
-  const directPathToChild = useSelector(
+  const directPathToChild = useAppSelector(
     (state: RootState) => state.dashboardState.directPathToChild,
   );
-  const nativeFiltersBarOpen = useSelector(
+  const nativeFiltersBarOpen = useAppSelector(
     (state: RootState) => state.dashboardState.nativeFiltersBarOpen ?? false,
   );
 

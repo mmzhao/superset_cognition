@@ -28,7 +28,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { isEqual } from 'lodash';
 import {
@@ -72,6 +72,7 @@ import { CHART_TYPE } from 'src/dashboard/util/componentTypes';
 import { NATIVE_FILTER_DIVIDER_PREFIX } from '../nativeFilters/FiltersConfigModal/utils';
 import { selectFilterConfiguration } from '../nativeFilters/state';
 import { getRootLevelTabsComponent } from './utils';
+import { useAppDispatch, useAppSelector } from 'src/views/store';
 
 type DashboardContainerProps = {
   topLevelTabs?: LayoutItem;
@@ -131,7 +132,7 @@ export const renderedChartIdsSelector: (state: RootState) => number[] =
   );
 
 const useRenderedChartIds = () => {
-  const renderedChartIds = useSelector<RootState, number[]>(
+  const renderedChartIds = useAppSelector<RootState, number[]>(
     renderedChartIdsSelector,
     shallowEqual,
   );
@@ -141,23 +142,23 @@ const useRenderedChartIds = () => {
 const TOP_OF_PAGE_RANGE = 220;
 
 const DashboardContainer: FC<DashboardContainerProps> = ({ topLevelTabs }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const dashboardLayout = useSelector<RootState, DashboardLayout>(
+  const dashboardLayout = useAppSelector<RootState, DashboardLayout>(
     state => state.dashboardLayout.present,
   );
-  const dashboardInfo = useSelector<RootState, DashboardInfo>(
+  const dashboardInfo = useAppSelector<RootState, DashboardInfo>(
     state => state.dashboardInfo,
   );
-  const filterItems = useSelector(selectFilterConfiguration);
-  const chartCustomizations = useSelector<
+  const filterItems = useAppSelector(selectFilterConfiguration);
+  const chartCustomizations = useAppSelector<
     RootState,
     ChartCustomizationConfiguration
   >(
     state => state.dashboardInfo?.metadata?.chart_customization_config || [],
     shallowEqual,
   );
-  const directPathToChild = useSelector<RootState, string[]>(
+  const directPathToChild = useAppSelector<RootState, string[]>(
     state => state.dashboardState.directPathToChild,
   );
   const chartIds = useChartIds();

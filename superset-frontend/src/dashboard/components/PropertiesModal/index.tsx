@@ -48,7 +48,6 @@ import {
   getColorNamespace,
   getFreshLabelsColorMapEntries,
 } from 'src/utils/colorScheme';
-import { useDispatch } from 'react-redux';
 import {
   setColorScheme,
   setDashboardMetadata,
@@ -58,6 +57,7 @@ import { areObjectsEqual } from 'src/reduxUtils';
 import { StandardModal, useModalValidation } from 'src/components/Modal';
 import { validateRefreshFrequency } from '../RefreshFrequency';
 import {
+import { useAppDispatch } from 'src/views/store';
   BasicInfoSection,
   AccessSection,
   StylingSection,
@@ -114,7 +114,7 @@ const PropertiesModal = ({
   onSubmit = () => {},
   show = false,
 }: PropertiesModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
   const [isLoading, setIsLoading] = useState(true);
